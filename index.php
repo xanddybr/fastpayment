@@ -6,7 +6,7 @@
 </head>
 <body>
 <form id="myForm">
-    <h1>WordPress Users</h1>
+    <h1>Implementatio of Mercado Pago for Mistura de luz</h1>
     <select name="option">
         <option value="wp_options">wp_options</option>
         <option value="wp_users">wp_users</option>
