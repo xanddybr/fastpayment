@@ -1,10 +1,10 @@
 <?php
 // Database connection settings
-$host = '127.0.0.1';
-$dbname = 'u617177303_ojmEi';
-$username = 'u617177303_6SGgU';
+$host = 'localhost';
+$dbname = 'u617177303_fastpay';
+$username = 'u617177303_root';
 $password = 'Mistura#1';
-
+    
 // Connect to MySQL
 $conn = new mysqli($host, $username, $password, $dbname);
 
