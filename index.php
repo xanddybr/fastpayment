@@ -6,11 +6,7 @@
 </head>
 <body>
 <form id="myForm">
-    <h1>Implementatio of Mercado Pago for Mistura de luz - BETA 2</h1>
-    <select name="option">
-        <option value="wp_options">wp_options</option>
-        <option value="wp_users">wp_users</option>
-    </select>
+    <h1>Implementatio of Mercado Pago for Mistura de luz - BETA 2 Teste</h1>
     <button type="submit">Load Users</button>
     <pre id="output"></pre>
 </form>

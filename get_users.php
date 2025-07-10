@@ -1,9 +1,10 @@
 <?php
+
 // Database connection settings
-$host = 'localhost';
-$dbname = 'fastpay';
-$username = 'u617177303_root';
-$password = 'Mistura#1';
+$host = '127.0.0.1';
+$dbname = 'u617177303_fastpay';
+$username = 'root';
+$password = 'Alex@179700';
 
 // Connect to MySQL
 $conn = new mysqli($host, $username, $password, $dbname);
@@ -12,11 +13,9 @@ $conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
     die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
 }
-
-$table = htmlspecialchars($_POST['option']);
  
 // Query wp_users table
-$sql = "SELECT * FROM ". $table;
+$sql = "SELECT * FROM wp_users";
 $result = $conn->query($sql);
 $users = [];
 
