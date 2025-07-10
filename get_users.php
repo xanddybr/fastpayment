@@ -2,7 +2,7 @@
 // Database connection settings
 $host = 'localhost';
 $dbname = 'u617177303_fastpay';
-$username = 'u617177303_6SGgU';
+$username = 'u617177303_root';
 $password = 'Mistura#1';
 
 // Connect to MySQL
