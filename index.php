@@ -5,7 +5,7 @@
   <title>FastPayment - Login</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body>  
   <div class="container">
     <h2>FastPayment</h2>
     <input type="email" id="email" placeholder="Seu e-mail">

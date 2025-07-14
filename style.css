@@ -22,6 +22,7 @@ input[type="password"] {
   border: none;
   background: #555;
   color: white;
+  font-size: large;
 }
 
 button {
