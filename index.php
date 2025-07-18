@@ -13,5 +13,10 @@
     <button onclick="login()">Entrar</button>
   </div>
   <script src="script.js"></script>
+  <center style="margin-top: 350px">v1.0.0beta</center>
 </body>
 </html>
+
+
+
+
