@@ -8,7 +8,7 @@
   <h1>User List</h1>
   <table border="1" id="usersTable" style="width: 1000px;">
     <thead>
-      <tr><th>ID</th><th>Name</th><th>Email</th></tr>
+      <tr><th>ID</th><th>Name</th><th>Email Recebido</th></tr>
     </thead>
     <tbody></tbody>
   </table>
