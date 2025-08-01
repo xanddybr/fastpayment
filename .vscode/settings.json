@@ -1,0 +1,12 @@
+{
+  "editor.fontSize": 14,
+  "editor.tabSize": 4,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "phpserver.autoOpenOnReload": true,
+  "phpserver.port": 5500
+}
+
+
+    
+
