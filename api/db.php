@@ -2,7 +2,7 @@
 $host = "localhost";
 $db = "u617177303_fastpay";
 $user = "root"; // ou outro usuário
-$pass = "Alex@1797";     // ou a senha correta
+$pass = "";     // ou a senha correta
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
