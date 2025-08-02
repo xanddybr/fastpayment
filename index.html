@@ -7,41 +7,13 @@
 </head>
 <body>  
   <div class="container">
-    <h2>FastPayment 2</h2>
+    <h2>FastPayment</h2>
     <input type="email" id="email" placeholder="Seu e-mail">
     <input type="password" id="senha" placeholder="Senha">
     <button>Entrar</button>
   </div>
   <script src="script.js"></script>
   <center style="margin-top: 350px">v1.0.0beta</center>
-
-
-  <script>
-
-  function cadastrarUsuario() {
-    fetch('http://127.0.0.1:5500/api/person/create.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        full_name: 'João da Silva',
-        email: 'joao@email.com',
-        password: '123456',
-        type_person: 'client'
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("Usuário criado com ID: " + data.id_person);
-      } else {
-        alert("Erro: " + data.error);
-      }
-    });
-  }
-  
-</script>
-
-<button onclick="cadastrarUsuario()">Cadastrar</button>
 
 </body>
 </html>
