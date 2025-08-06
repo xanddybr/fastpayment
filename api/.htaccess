@@ -1,9 +1,6 @@
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /api/
+RewriteEngine On
 
-  # Remove .php da URL
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME}.php -f
-  RewriteRule ^(.*)$ $1.php [L,QSA]
-</IfModule>
+# Habilita a reescrita de URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([a-zA-Z0-9_-]+)$ $1.html [L]
