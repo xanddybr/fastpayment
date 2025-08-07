@@ -3,24 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>FastPayment - Login</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>  
-  <div class="container">
-    <h2>FastPayment</h2>
-    <input type="email" id="email" placeholder="Seu e-mail">
-    <input type="password" id="senha" placeholder="Senha">
-    <button>Entrar</button>
-  </div>
-  <script src="script.js"></script>
-  <center style="margin-top: 350px">v1.0.0beta</center>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+   <link rel="stylesheet" href="style.css">
+  
+  <!-- Bootstrap JS -->
+  <script src="js/bootstrap.bundle.min.js"></script>
 
+</head>
+<body>
+
+  <div class="container">
+    <div class="login-container">
+      <div class="brand-title">FastPayment</div>
+      <form id="loginForm">
+        <input type="email" class="form-control" id="email" placeholder="Seu e-mail" required>
+        <input type="password" class="form-control" id="senha" placeholder="Senha" required>
+        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+      </form>
+    </div>
+    <div class="version-info">v1.0.0beta</div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-

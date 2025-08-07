@@ -1,44 +1,30 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: #fff;
-  margin: 0;
-}
+ body {
+      background-color: #f8f9fa;
+    }
 
-.container {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  background-color: #333;
-  border-radius: 10px;
-  margin-top: 50px;
-  
-}
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-input[type="email"],
-input[type="password"] {
-  width: 95%;
-  padding: 10px;
-  margin: 10px 0;
-  background: #555;
-  color: white;
-  font-size: large;
-  border-radius: 7px;
-  border: none;
-}
+    .form-control {
+      margin-bottom: 15px;
+    }
 
-button {
-  width: 100%;
-  padding: 13px;
-  background: #000;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 7px;
-}
+    .brand-title {
+      font-weight: bold;
+      font-size: 28px;
+      color: #0d6efd;
+      text-align: center;
+      margin-bottom: 25px;
+    }
 
-.navbar {
-  background: #222;
-  display: flexbox;
-  align-content: center;
-}
+    .version-info {
+      text-align: center;
+      margin-top: 50px;
+      color: #6c757d;
+    }

@@ -8,8 +8,10 @@ Users Storys
 - Como cliente logo em seguida eu irei informar meu nome e sobrenome, email, e receberei um código de 6 digitos para validar o mesmo que me levará para o checkout pro Mercado pago para efetuar o pagamento da forma que eu desejar.
 - Como aplicação após o sucesso na compra eu irei notificar o cliente e o admin enviando o comprovante de pagamento via webhook e decrementar o campo vaga na tabela agenda.
 - Como aplicação eu armazenar o histórico desta compra com seus respectivos campos e nome e sobrenome do usuario.
-- Como aplicação eu solicitarei para o cliente o preenchimento com algumas informaçoes pessoais sobre ele que ficará em uma tabela no banco dados vinculado ao evento comprado e tbm será enviada por email para o admin.
+- Como aplicação eu solicitarei para o cliente o preenchimento de informaçoes pessoas que serão finculadas a data de compra do referido evento e enviada por email para o admin.
 
+
+Diagrama ASCII 
 
 
                               [Admin]
