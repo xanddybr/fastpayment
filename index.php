@@ -1,3 +1,5 @@
+<?php require_once './api/validate.php'; ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
