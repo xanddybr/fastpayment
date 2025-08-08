@@ -1,6 +1,7 @@
 <?php
+
 include_once 'db.php';
-include_once '../jwt.php'; // Esse é um arquivo com as funções de geração de JWT
+include_once 'jwt.php'; // Esse é um arquivo com as funções de geração de JWT
 
 header('Content-Type: application/json');
 

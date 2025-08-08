@@ -6,6 +6,7 @@
   <title>Mistura de Luz</title>
  <link rel="stylesheet" href="css/bootstrap.min.css">
  <script src="js/bootstrap.bundle.min.js"></script>
+ <script src="logon.js"></script>
 </head>
 <body class="bg-light">
 
@@ -62,8 +63,7 @@
             <td>${row.Evento}</td>
             <td>${row.Tipo}</td>
             <td>R$ ${parseFloat(row.Preco).toFixed(2)}</td>
-            <td>${row.Vagas}</td>
-          `;
+            <td>${row.Vagas}</td>`;
           tbody.appendChild(tr);
         });
       })

@@ -1,4 +1,6 @@
+
 <?php
+
 $host = "localhost";
 $db = "u617177303_fastpay";
 $user = "root"; // ou outro usuário
