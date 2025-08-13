@@ -79,7 +79,7 @@
         const selectedId = selected.value;
         alert(`Evento selecionado com id_schedule: ${selectedId}`);
         // Aqui você pode redirecionar para a próxima etapa, por exemplo:
-        // window.location.href = `checkout.html?id=${selectedId}`;
+        // window.location.href = `checkout.php?id=${selectedId}`;
       } else {
         alert("Por favor, selecione um evento para continuar.");
       }

@@ -1,5 +1,7 @@
 <?php
 
+require_once 'config.php';
+
 // Função para gerar um JWT (JSON Web Token)
 function generateJWT($payload) {
     
@@ -7,7 +9,7 @@ function generateJWT($payload) {
     $header = ['alg' => 'HS256', 'typ' => 'JWT'];
 
     // 2. Chave secreta usada para gerar a assinatura do token
-    $key = 'chave_secreta';
+    $key = '$2y$12$VJN04dskjhGGP5iijys0jObLjVV4zv/howw.z/gcZMfp7zeEcvA16';
 
     // 3. Codifica o cabeçalho em JSON e depois em Base64URL (formato específico do JWT)
     $base64UrlHeader = rtrim(strtr(base64_encode(json_encode($header)), '+/', '-_'), '=');

@@ -75,3 +75,46 @@ Diagrama ASCII
                                  |
                                  v
                    [Fim do Fluxo da Aplicação 🎯]
+
+
+
+Estrutura de Diretórios Atual do Projeto 
+
+
+
+fastpayment/
+│
+├── api/                          # Toda a lógica do backend (PHP)
+│   ├── config.php                 # Configuração do banco de dados (PDO)
+│   ├── generic/
+│   │   ├── create.php             # CRUD genérico - CREATE
+│   │   ├── read.php               # CRUD genérico - READ
+│   │   ├── update.php             # CRUD genérico - UPDATE
+│   │   ├── delete.php             # CRUD genérico - DELETE
+│   │
+│   ├── login.php                  # Autenticação e geração do JWT
+│   ├── validate.php               # Validação de token JWT
+│   ├── logout.php                 # Logout (invalidate token client-side)
+│   ├── jwt_utils.php              # Funções utilitárias para gerar/decodificar JWT
+│   └── .htaccess                  # Reescrita de URLs (remover .php das rotas)
+│
+├── css/
+│   ├── bootstrap.min.css          # Bootstrap local
+│   └── style.css                  # Estilos personalizados
+│
+├── js/
+│   ├── bootstrap.bundle.min.js    # Bootstrap JS local
+│   ├── script.js                  # Funções JS gerais
+│   ├── schedule.js                # Scripts para agendamento
+│   └── auth.js                    # Scripts para login/logout e token
+│
+├── pages/
+│   ├── login.html                 # Tela de login (Bootstrap estilizado)
+│   ├── schedule.html              # Tela de agendamento com listagem
+│   └── ...                        # Outras páginas futuras (dashboard, histórico, etc.)
+│
+├── uploads/                       # Caso precise armazenar imagens ou arquivos
+│
+├── .htaccess                      # Oculta extensões .html nas rotas do frontend
+├── index.html                     # Página inicial
+└── README.md                      # Documentação do projeto

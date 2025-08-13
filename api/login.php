@@ -1,37 +1,39 @@
+
 <?php
 
-include_once 'db.php';
-include_once 'jwt.php'; // Esse é um arquivo com as funções de geração de JWT
+require_once 'db.php';
+require_once 'jwt.php';
 
-header('Content-Type: application/json');
+// Body JSON
+$data = json_decode(file_get_contents('php://input'), true);
 
-$data = json_decode(file_get_contents("php://input"), true);
-
-if (!isset($data['email']) || !isset($data['password'])) {
-    echo json_encode(['error' => 'Email and password are required']);
+if (!isset($data['email'], $data['password'])) {
+    echo json_encode(['error' => 'Email and password required']);
     exit;
 }
 
 $email = $data['email'];
 $password = $data['password'];
 
-// Consulta no banco
-$stmt = $pdo->prepare("SELECT * FROM person WHERE email = ? and password = ?");
-$stmt->execute([$email,$password]);
+$query = "SELECT * FROM person WHERE email = :email";
+$stmt = $pdo->prepare($query);
+$stmt->bindParam(':email', $email);
+$stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($user && $password) {
-    // Gerar token
+if (!$user['email'] || !password_verify($password, $user['password'])) {
+    echo json_encode(['error' => 'Invalid credentials']);
+    exit;
+}
+
+ // Gerar token
     $payload = [
         'id' => $user['id_person'],
         'email' => $user['email'],
-        'type_person' => $user['type_person'],
-        'exp' => time() + (60 * 60) // 1 hora
+        'id_typeperson' => $user['id_typeperson'],
+        'exp' => time() + 3600// 1 hora
     ];
-
     $token = generateJWT($payload); // função no jwt.php
-
     echo json_encode(['token' => $token]);
-} else {
-    echo json_encode(['error' => 'Invalid credentials']);
-}
+
+

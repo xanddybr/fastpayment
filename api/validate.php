@@ -1,20 +1,23 @@
 <?php
-require_once 'jwt_helper.php'; // ou ajuste o caminho conforme a pasta
+require_once 'jwt_helper.php';
+
+header("Content-Type: application/json");
 
 $headers = getallheaders();
-
-if (!isset($headers['Authorization'])) {
-    http_response_code(401);
-    echo json_encode(["error" => "Token not provided"]);
+if (!isset($headers["Authorization"])) {
+    echo json_encode(["success" => false, "error" => "Token não informado"]);
     exit;
 }
 
-$token = str_replace('Bearer ', '', $headers['Authorization']);
+$token = str_replace("Bearer ", "", $headers["Authorization"]);
+$key = '$2y$12$VJN04dskjhGGP5iijys0jObLjVV4zv/howw.z/gcZMfp7zeEcvA16';
 
 try {
-    $decoded = JWT::decode($token, 'chave_secreta', ['HS256']);
-    echo json_encode(["success" => true, "data" => $decoded]);
+    $payload = JWT::decode($token, $key, ['HS256']);
+    echo json_encode(["success" => true, "data" => $payload]);
 } catch (Exception $e) {
-    http_response_code(401);
-    echo json_encode(["error" => "Invalid token", "details" => $e->getMessage()]);
+    echo json_encode(["success" => false, "error" => $e->getMessage()]);
 }
+
+
+
