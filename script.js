@@ -1,8 +1,19 @@
-const res = await fetch('http://localhost:8000/api/myevent.php');
-            const eventos = await res.json();
-            let select = document.getElementById("evento");
-            select.innerHTML = "";
-            eventos.forEach(e => {
-              select.innerHTML += `<option value="${e.id_myevent}">${e.myevent}</option>`;
-            console.log(e);
-});
+ let id = 2
+
+            
+                fetch('http://localhost:8000/api/generic/delete.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ table: "schedule", id_field: "id_schedule", id_value: id })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        console.log("arquivo deletado")
+                    } else {
+                        alert("Erro ao excluir: " + result.error);
+                    }
+                });
+            
+      
+        

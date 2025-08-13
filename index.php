@@ -134,10 +134,10 @@
 
         function deletarAgendamento(id) {
             if (confirm("Tem certeza que deseja excluir este agendamento? ")) {
-                fetch('api/delete.php', {
+                fetch('api/generic/delete.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ table: schedule, id_field: id_schedule, id_value: id })
+                    body: JSON.stringify({ table: "schedule", id_field: "id_schedule", id_value: id })
                 })
                 .then(response => response.json())
                 .then(result => {
