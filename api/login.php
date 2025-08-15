@@ -21,8 +21,13 @@ $stmt->bindParam(':email', $email);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if (!$user) {
+    echo json_encode(['error' => 'Senha inválida']);
+    exit;
+}
+
 if (!$user['email'] || !password_verify($password, $user['password'])) {
-    echo json_encode(['error' => 'Invalid credentials']);
+    echo json_encode(['error' => 'Usuário ou senha estão inválidos']);
     exit;
 }
 
@@ -31,7 +36,7 @@ if (!$user['email'] || !password_verify($password, $user['password'])) {
         'id' => $user['id_person'],
         'email' => $user['email'],
         'id_typeperson' => $user['id_typeperson'],
-        'exp' => time() + 3600// 1 hora
+        'exp' => time() + 360000// 1 hora
     ];
     $token = generateJWT($payload); // função no jwt.php
     echo json_encode(['token' => $token]);
