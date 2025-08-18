@@ -54,7 +54,7 @@
 
     <!-- Login -->
     <div id="login">
-        <h3 class="mb-3 text-center">Login</h3>
+        <h3 class="mb-3 text-center">FastPayment</h3>
         <div class="mb-3">
             <input type="email" id="email" class="form-control" placeholder="Seu e-mail" required>
         </div>
@@ -71,7 +71,7 @@
 <div id="dashboardWrapper" style="display: flex; justify-content: center;">
 
     <!-- Dashboard Container -->
-    <div id="dashboard" style="width: 130%;">
+    <div id="dashboard" style="">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Mistura de Luz</h3>
@@ -81,10 +81,10 @@
         <h5>Cadastro de Agendamento</h5>
         <form id="formAgendamento" class="row g-2 mb-4" style="width: 100%;">
             <div class="col-md-2">
-                <input type="text" id="data" class="form-control" maxlength="10" placeholder="dd/mm/yyyy" required>
+                <input type="date" id="data" class="form-control" maxlength="10" placeholder="dd/mm/yyyy" required>
             </div>
             <div class="col-md-2">
-                <input type="text" id="hora" class="form-control" placeholder="00:00" required>
+                <input type="time" id="hora" class="form-control" placeholder="00:00" required>
             </div>
             <div class="col-md-3">
                 <select id="evento" class="form-select" required></select>
@@ -204,6 +204,17 @@ function getDayName(dateString) {
     return dayNames[date.getDay()];
 }
 
+function formatDate(isoDate) {
+    // isoDate vem no formato "YYYY-MM-DD"
+    const partes = isoDate.split("-"); // ["2025", "08", "20"]
+    const ano = partes[0];
+    const mes = partes[1];
+    const dia = partes[2];
+
+    return `${dia}/${mes}/${ano}`;
+}
+
+
 // Carregar agendamentos
 async function carregarAgendamentos() {
     const res = await fetch(`${API_URL}/schedule.php`);
@@ -251,11 +262,11 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
     const data = {
         table: "schedule",
         values: {
-            date: document.getElementById("data").value,
+            date: formatDate(document.getElementById("data").value),
             time: document.getElementById("hora").value,
             id_myevent: parseInt(document.getElementById("evento").value),
             id_tpEvent: parseInt(document.getElementById("tipo").value),
-            id_units: 1,
+            id_units: 3,
             vacancies: parseInt(document.getElementById("vagas").value)
         }
     };
