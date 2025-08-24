@@ -21,7 +21,7 @@
         /* Login centralizado */
         #login {
             max-width: 400px;
-            margin: 0 auto;
+            margin: 0 0 0 260px;
             padding: 30px;
             background: white;
             border-radius: 8px;
@@ -65,26 +65,26 @@
     </div>
 
     <!-- Dashboard Wrapper -->
-<div id="dashboardWrapper" style="width: 130%; margin: 0 auto;">
-
-    <!-- Dashboard Wrapper -->
-<div id="dashboardWrapper" style="display: flex; justify-content: center;">
+<div id="dashboardWrapper" >
 
     <!-- Dashboard Container -->
-    <div id="dashboard" style="">
+    <div id="dashboard" style="display: flex; justify-content: center; margin: 0 -250px 0 -90px;">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>Mistura de Luz</h3>
+            <h3>Agenda - Mistura de Luz</h3>
             <button class="btn btn-danger" onclick="logout()">Sair</button>
         </div>
 
-        <h5>Cadastro de Agendamento</h5>
+        <h5>Preencha as informações do evento:</h5>
         <form id="formAgendamento" class="row g-2 mb-4" style="width: 100%;">
             <div class="col-md-2">
                 <input type="date" id="data" class="form-control" maxlength="10" placeholder="dd/mm/yyyy" required>
             </div>
-            <div class="col-md-2">
-                <input type="time" id="hora" class="form-control" placeholder="00:00" required>
+            <div class="col-md-1">
+                <select id="hora" class="form-control" placeholder="H" required></select>
+            </div>
+            <div class="col-md-1">
+                <select id="minuto" class="form-control" placeholder="M" required></select>
             </div>
             <div class="col-md-3">
                 <select id="evento" class="form-select" required></select>
@@ -103,7 +103,7 @@
             </div>
         </form>
 
-        <h5>Agenda Mistura de Luz</h5>
+        <h5>Datas disponibilizadas em sua agenda:</h5>
         <div style="width: 100%; overflow-x:auto;">
             <table class="table table-striped table-bordered">
                 <thead>
@@ -115,7 +115,7 @@
                     <th>Tipo</th>
                     <th>Modo/Unidade</th>
                     <th>Preço</th>
-                    <th>Vagas</th>
+                    <th>Vaga(s)</th>
                     <th>Excluir</th>
                 </tr>
                 </thead>
@@ -141,6 +141,8 @@ function checkLogin() {
         carregarTipos();
         carregarAgendamentos();
         carregarUnidades();
+        carregaHora();
+        carregaMinuto();
     } else {
         mostrarLogin();
     }
@@ -189,23 +191,62 @@ async function carregarEventos() {
     const res = await fetch(`${API_URL}/myevent.php`);
     const eventos = await res.json();
     let select = document.getElementById("evento");
-    select.innerHTML =
-    select.innerHTML = eventos.map(e => `<option value="${e.id_myevent}">${e.myevent}</option>`).join('');
+    select.innerHTML =  `<option value='' disabled selected>Selecione um evento</option>` + eventos.map(e => `<option value="${e.id_myevent}">${e.myevent}</option>`).join('');
 }
 
 async function carregarTipos() {
     const res = await fetch(`${API_URL}/typeevent.php`);
     const tipos = await res.json();
     let select = document.getElementById("tipo");
-    select.innerHTML = tipos.map(t => `<option value="${t.id_tpevent}">${t.tpevent}</option>`).join('');
+    select.innerHTML = `<option value='' disabled selected>Tipo</option>` + tipos.map(t => `<option value="${t.id_tpevent}">${t.tpevent}</option>`).join('');
 }
 
 async function carregarUnidades() {
     const res = await fetch(`${API_URL}/unidade.php`);
     const unidade = await res.json();
     let select = document.getElementById("unidade");
-    select.innerHTML = unidade.map(t => `<option value="${t.id_units}">${t.units}</option>`).join('');
+    select.innerHTML = `<option value='' disabled selected>Unidade</option>` + unidade.map(t => `<option value="${t.id_units}">${t.units}</option>`).join('');
 }  
+
+function carregaHora() {
+    
+    const select = document.getElementById("hora");
+
+  // cria o "placeholder"
+    const placeholder = document.createElement("option");
+    placeholder.text = "H";       // o que aparece na tela
+    placeholder.value = "";       // valor vazio
+    placeholder.disabled = true;  // não pode ser escolhido
+    placeholder.selected = true;  // aparece como selecionado por padrão
+    select.appendChild(placeholder);
+
+  for (let i = 0; i <= 24; i++) {
+    const option = document.createElement("option");
+    // garante o formato 2 dígitos (00, 01, 02...)
+    option.value = option.text = i.toString().padStart(2, "0");
+    select.appendChild(option);
+  }
+}
+
+function carregaMinuto() {
+    
+    const select = document.getElementById("minuto");
+
+  // cria o "placeholder"
+    const placeholder = document.createElement("option");
+    placeholder.text = "M";       // o que aparece na tela
+    placeholder.value = "";       // valor vazio
+    placeholder.disabled = true;  // não pode ser escolhido
+    placeholder.selected = true;  // aparece como selecionado por padrão
+    select.appendChild(placeholder);
+
+  for (let i = 0; i <= 59; i++) {
+    const option = document.createElement("option");
+    // garante o formato 2 dígitos (00, 01, 02...)
+    option.value = option.text = i.toString().padStart(2, "0");
+    select.appendChild(option);
+  }
+}
 
 // Função utilitária para nome do dia
 function getDayName(dateString) {
@@ -274,7 +315,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         table: "schedule",
         values: {
             date: formatDate(document.getElementById("data").value),
-            time: document.getElementById("hora").value,
+            time: document.getElementById("hora").value + ":" + document.getElementById("minuto").value + ":00",
             id_myevent: parseInt(document.getElementById("evento").value),
             id_tpEvent: parseInt(document.getElementById("tipo").value),
             id_units: parseInt(document.getElementById("unidade").value),
