@@ -89,11 +89,14 @@
             <div class="col-md-3">
                 <select id="evento" class="form-select" required></select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <select id="tipo" class="form-select" required></select>
             </div>
             <div class="col-md-2">
-                <input type="number" id="vagas" class="form-control" placeholder="Qtd vagas" required>
+                <select id="unidade" class="form-select" required></select>
+            </div>
+            <div class="col-md-1">
+                <input type="number" id="vagas" class="form-control" placeholder="Qtd" required>
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success w-100">Salvar</button>
@@ -137,6 +140,7 @@ function checkLogin() {
         carregarEventos();
         carregarTipos();
         carregarAgendamentos();
+        carregarUnidades();
     } else {
         mostrarLogin();
     }
@@ -181,11 +185,11 @@ function logout() {
     mostrarLogin();
 }
 
-// Carregar eventos e tipos
 async function carregarEventos() {
     const res = await fetch(`${API_URL}/myevent.php`);
     const eventos = await res.json();
     let select = document.getElementById("evento");
+    select.innerHTML =
     select.innerHTML = eventos.map(e => `<option value="${e.id_myevent}">${e.myevent}</option>`).join('');
 }
 
@@ -195,6 +199,13 @@ async function carregarTipos() {
     let select = document.getElementById("tipo");
     select.innerHTML = tipos.map(t => `<option value="${t.id_tpevent}">${t.tpevent}</option>`).join('');
 }
+
+async function carregarUnidades() {
+    const res = await fetch(`${API_URL}/unidade.php`);
+    const unidade = await res.json();
+    let select = document.getElementById("unidade");
+    select.innerHTML = unidade.map(t => `<option value="${t.id_units}">${t.units}</option>`).join('');
+}  
 
 // Função utilitária para nome do dia
 function getDayName(dateString) {
@@ -266,7 +277,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
             time: document.getElementById("hora").value,
             id_myevent: parseInt(document.getElementById("evento").value),
             id_tpEvent: parseInt(document.getElementById("tipo").value),
-            id_units: 3,
+            id_units: parseInt(document.getElementById("unidade").value),
             vacancies: parseInt(document.getElementById("vagas").value)
         }
     };
