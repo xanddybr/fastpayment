@@ -68,7 +68,7 @@
 <div id="dashboardWrapper" >
 
     <!-- Dashboard Container -->
-    <div id="dashboard" style="display: flex; justify-content: center; margin: 0 -250px 0 -90px;">
+    <div id="dashboard" style="display: flex; justify-content: center; margin: 0 -280px 0 -100px">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Agenda - Mistura de Luz</h3>
@@ -76,7 +76,7 @@
         </div>
 
         <h5>Preencha as informações do evento:</h5>
-        <form id="formAgendamento" class="row g-2 mb-4" style="width: 100%;">
+        <form id="formAgendamento" class="row g-1 mb-4" >
             <div class="col-md-2">
                 <input type="date" id="data" class="form-control" maxlength="10" placeholder="dd/mm/yyyy" required>
             </div>
@@ -87,7 +87,7 @@
                 <select id="minuto" class="form-control" placeholder="M" required></select>
             </div>
             <div class="col-md-3">
-                <select id="evento" class="form-select" required></select>
+                <select id="evento" class="form-select" required></select> 
             </div>
             <div class="col-md-2">
                 <select id="tipo" class="form-select" required></select>
@@ -98,8 +98,11 @@
             <div class="col-md-1">
                 <input type="number" id="vagas" class="form-control" placeholder="Qtd" required>
             </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-success w-100">Salvar</button>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-success">Salvar</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn" id="openModal">Event</button>
             </div>
         </form>
 
@@ -240,10 +243,10 @@ function carregaMinuto() {
     placeholder.selected = true;  // aparece como selecionado por padrão
     select.appendChild(placeholder);
 
-  for (let i = 0; i <= 59; i++) {
+  for (let i = 0; i <= 5; i++) {
     const option = document.createElement("option");
     // garante o formato 2 dígitos (00, 01, 02...)
-    option.value = option.text = i.toString().padStart(2, "0");
+    option.value = option.text = i + "0"
     select.appendChild(option);
   }
 }
@@ -264,6 +267,18 @@ function formatDate(isoDate) {
     const dia = partes[2];
 
     return `${dia}/${mes}/${ano}`;
+}
+
+function getDateTime() {
+  const now = new Date();
+  const year   = now.getFullYear();
+  const month  = String(now.getMonth() + 1).padStart(2, '0'); // meses 0–11
+  const day    = String(now.getDate()).padStart(2, '0');
+  const hour   = String(now.getHours()).padStart(2, '0');
+  const minute = String(now.getMinutes()).padStart(2, '0');
+  const second = String(now.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
 
@@ -319,7 +334,8 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
             id_myevent: parseInt(document.getElementById("evento").value),
             id_tpEvent: parseInt(document.getElementById("tipo").value),
             id_units: parseInt(document.getElementById("unidade").value),
-            vacancies: parseInt(document.getElementById("vagas").value)
+            vacancies: parseInt(document.getElementById("vagas").value),
+            created_at: getDateTime()
         }
     };
 
@@ -349,5 +365,53 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
 // Inicializa
 checkLogin();
 </script>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Modal Simples</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .btn { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 5px; }
+
+    /* Estilos do modal */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .modal-content { background: #fff; margin: 10% auto; padding: 20px; border-radius: 8px; width: 400px; max-height: 80vh; overflow-y: auto; }
+    .close { float: right; font-size: 24px; cursor: pointer; color: #888; }
+    .close:hover { color: red; }
+
+    /* Inputs */
+    form input, form button, select {
+      width: 100%; padding: 10px; margin: 6px 0; border: 1px solid #ccc; border-radius: 5px;
+    }
+    form button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+    form button:hover { background: #45a049; }
+  </style>
+</head>
+<body>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h6>Cadastrar Evento</h6>
+        <form id="formAdd">
+            <input type="text" name="myevent" placeholder="Nome do Evento" required>
+            <input type="number" step="0.01" name="price" placeholder="Preço" required>
+            <button type="submit">Adicionar</button>
+        </form>
+        <form id="formDelete">
+            <select id="eventList" name="id_myevent" size="5" required></select>
+            <button type="submit">Deletar</button>
+        </form>
+        </div>
+    </div>
+
+  <script src="modal.js"></script>
+</body>
+</html>
+
+
 </body>
 </html>
