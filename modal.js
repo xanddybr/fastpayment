@@ -1,7 +1,7 @@
 const modal = document.getElementById("myModal");
 const openBtn = document.getElementById("openModal");
 const closeBtn = document.getElementById("closeModal");
-const formAdd = document.getElementById("formAdd");
+
 const formDelete = document.getElementById("formDelete");
 const eventList = document.getElementById("eventList");
 
@@ -43,10 +43,37 @@ async function loadEvents() {
 }
 
 // Adicionar evento
+/*
+{
+    "table":"myevent",
+    "values":{
+        "id_myevent": null,
+        "myevent":"Reiki 2",
+        "price": 300.00
+}*/
+
 formAdd.addEventListener("submit", async e => {
   e.preventDefault();
-  const formData = new FormData(formAdd);
-  const res = await fetch("api/generic/insert.php", { method: "POST", body: formData });
+
+  const formAdd = document.getElementById("formAdd");
+  let formData = new FormData(formAdd);
+
+  // converte para objeto
+  let obj = {};
+  formData.forEach((value, key) => obj[key] = value);
+
+  // monta o payload esperado
+  let payload = {
+    table: "myevent", // <-- troque pelo nome da sua tabela
+    values: obj
+  };
+
+  const res = await fetch("api/generic/insert.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
   if (res.ok) {
     formAdd.reset();
     loadEvents();
@@ -55,16 +82,33 @@ formAdd.addEventListener("submit", async e => {
   }
 });
 
+
 // Deletar evento
 formDelete.addEventListener("submit", async e => {
   e.preventDefault();
-  const formData = new FormData(formDelete);
-  const res = await fetch("api/generic/delete.php", { method: "POST", body: formData });
-  if (res.ok) {
-    loadEvents();
-  } else {
-    alert("Erro ao deletar!");
-  }
+
+const formData = new FormData(formAdd);
+
+  console.log(formData.entries)
+  console.log(eventList.value)
+
+ try {
+    const res = await fetch("http://localhost:8000/api/generic/delete.php", 
+    { method: 'DELETE', 
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ table: "myevent", id_field: "id_myevent", id_value: null })
+    })
+          if (res.ok) {
+            alert("Deletado com sucess!")
+            loadEvents();
+          } else {
+            alert("erro de deleção!")
+          }
+    
+  } catch (error) {
+      alert(error + " Erro ao tentar deletar o registro")
+  } 
+
 });
 
 loadEvents();

@@ -21,7 +21,7 @@
         /* Login centralizado */
         #login {
             max-width: 400px;
-            margin: 0 0 0 260px;
+            margin: 0 0 0 300px;
             padding: 30px;
             background: white;
             border-radius: 8px;
@@ -102,7 +102,7 @@
                 <button type="submit" class="btn btn-success">Salvar</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn" id="openModal">Event</button>
+                <button type="button" class="btn btn-success" id="openModal">Event</button>
             </div>
         </form>
 
@@ -139,17 +139,19 @@ const API_URL = "api";
 function checkLogin() {
     const token = localStorage.getItem("token");
     if (token) {
-        mostrarDashboard();
         carregarEventos();
         carregarTipos();
         carregarAgendamentos();
         carregarUnidades();
         carregaHora();
         carregaMinuto();
+        mostrarDashboard();
     } else {
         mostrarLogin();
     }
 }
+
+checkLogin();
 
 function mostrarLogin() {
     document.getElementById("login").style.display = "block";
@@ -175,10 +177,13 @@ async function makeLogin() {
     const data = await res.json();
     if (data.token) {
         localStorage.setItem("token", data.token);
-        mostrarDashboard();
         carregarEventos();
         carregarTipos();
         carregarAgendamentos();
+        carregarUnidades();
+        carregaHora();
+        carregaMinuto();
+        mostrarDashboard();
     } else {
         alert(data.error);
     }
@@ -223,7 +228,7 @@ function carregaHora() {
     placeholder.selected = true;  // aparece como selecionado por padrão
     select.appendChild(placeholder);
 
-  for (let i = 0; i <= 24; i++) {
+  for (let i = 0; i <= 23; i++) {
     const option = document.createElement("option");
     // garante o formato 2 dígitos (00, 01, 02...)
     option.value = option.text = i.toString().padStart(2, "0");
@@ -287,6 +292,7 @@ async function carregarAgendamentos() {
     const res = await fetch(`${API_URL}/schedule.php`);
     const agendamentos = await res.json();
     let tabela = document.getElementById("tabelaAgendamentos");
+
     tabela.innerHTML = agendamentos.map(a => `
         <tr>
             <td>${getDayName(a.date)}</td>
@@ -297,9 +303,15 @@ async function carregarAgendamentos() {
             <td>${a.units}</td>
             <td>R$${a.price}</td>
             <td>${a.vacancies}</td>
-            <td><button class="btn btn-danger btn-sm" onclick="deletarAgendamento(${a.id_schedule})">Excluir</button></td>
+            <td>
+              <button class="btn btn-danger btn-sm" 
+                      onclick="deletarAgendamento(${a.id_schedule})">
+                Excluir
+              </button>
+            </td>
         </tr>
-    `).join('');
+    `)
+  .join('');
 }
 
 // Deletar agendamento
@@ -363,7 +375,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
 });
 
 // Inicializa
-checkLogin();
+
 </script>
 
 <!DOCTYPE html>
@@ -396,15 +408,18 @@ checkLogin();
         <div class="modal-content">
         <span class="close" id="closeModal">&times;</span>
         <h6>Cadastrar Evento</h6>
+        
         <form id="formAdd">
             <input type="text" name="myevent" placeholder="Nome do Evento" required>
             <input type="number" step="0.01" name="price" placeholder="Preço" required>
             <button type="submit">Adicionar</button>
         </form>
+
         <form id="formDelete">
-            <select id="eventList" name="id_myevent" size="5" required></select>
+            <select id="eventList" name="eventList" value="id_myevent" size="5" required></select>
             <button type="submit">Deletar</button>
         </form>
+        
         </div>
     </div>
 
