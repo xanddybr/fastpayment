@@ -1,8 +1,10 @@
 <?php
-require_once 'db.php';  // conexão PDO
-require_once 'validate.php'; // protege com JWT
 
-header("Content-Type: application/json; charset=UTF-8");
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+
+require_once 'db.php';
 
 // Lê dados enviados no corpo da requisição
 $data = json_decode(file_get_contents("php://input"), true);
@@ -22,9 +24,9 @@ try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array_values($values));
 
-    echo json_encode(["success" => true]);
+    echo json_encode(["success" => true, "message" => "Registro adicionado com sucesso!"]);
 
-} catch (Exception $e) {
-   
-    echo json_encode(["error" => $e->getMessage()]);
+} catch (PDOException $e) {
+    echo json_encode(["error" => "Database error: " . $e->getMessage()]);
 }
+
