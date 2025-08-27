@@ -2,7 +2,7 @@
 require_once 'db.php';  // conexão PDO
 require_once 'validate.php'; // protege com JWT
 
-header("Content-Type: application/json");
+header("Content-Type: application/json; charset=UTF-8");
 
 // Lê dados enviados no corpo da requisição
 $data = json_decode(file_get_contents("php://input"), true);
@@ -23,7 +23,8 @@ try {
     $stmt->execute(array_values($values));
 
     echo json_encode(["success" => true]);
+
 } catch (Exception $e) {
-    http_response_code(500);
+   
     echo json_encode(["error" => $e->getMessage()]);
 }

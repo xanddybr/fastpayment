@@ -1,0 +1,94 @@
+/* Estilo global */
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 650px;
+    margin-top: 50px;
+    margin-right: 400px;
+}
+
+/* Login centralizado */
+#login {
+    max-width: 400px;
+    margin: 100px 0 0 200px;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* Dashboard */
+#dashboard {
+    display: none;
+    justify-content: center;
+    margin: 0 -280px 0 -100px;
+}
+
+/* Tabelas */
+table {
+    width: 100%;
+}
+th, td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Inputs */
+input, select {
+    min-width: 100%;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+}
+.close:hover {
+    color: red;
+}
+
+/* Botões dentro do modal */
+.modal-content form input,
+.modal-content form select,
+.modal-content form button {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modal-content form button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.modal-content form button:hover {
+    background: #45a049;
+}

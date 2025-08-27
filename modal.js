@@ -1,7 +1,6 @@
 const modal = document.getElementById("myModal");
 const openBtn = document.getElementById("openModal");
 const closeBtn = document.getElementById("closeModal");
-
 const formDelete = document.getElementById("formDelete");
 const eventList = document.getElementById("eventList");
 
@@ -52,63 +51,37 @@ async function loadEvents() {
         "price": 300.00
 }*/
 
-formAdd.addEventListener("submit", async e => {
-  e.preventDefault();
+// Form adicionar evento
 
-  const formAdd = document.getElementById("formAdd");
-  let formData = new FormData(formAdd);
-
-  // converte para objeto
-  let obj = {};
-  formData.forEach((value, key) => obj[key] = value);
-
-  // monta o payload esperado
-  let payload = {
-    table: "myevent", // <-- troque pelo nome da sua tabela
-    values: obj
-  };
-
-  const res = await fetch("api/generic/insert.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
-
-  if (res.ok) {
-    formAdd.reset();
-    loadEvents();
-  } else {
-    alert("Erro ao adicionar!");
-  }
+document.getElementById("formAdd").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const formData = Object.fromEntries(new FormData(this));
+    const res = await fetch("http://localhost:8000/api/insert.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify({ table: "myevent", values: formData })
+    });
+    const data = await res.json();
+    console.log(data.success)
+    if (data.success) { alert("Evento adicionado!"); loadEvents(); }
+    else { alert("Erro: " + data.error); }
 });
 
 
-// Deletar evento
-formDelete.addEventListener("submit", async e => {
-  e.preventDefault();
-
-const formData = new FormData(formAdd);
-
-  console.log(formData.entries)
-  console.log(eventList.value)
-
- try {
-    const res = await fetch("http://localhost:8000/api/generic/delete.php", 
-    { method: 'DELETE', 
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ table: "myevent", id_field: "id_myevent", id_value: null })
-    })
-          if (res.ok) {
-            alert("Deletado com sucess!")
-            loadEvents();
-          } else {
-            alert("erro de deleção!")
-          }
-    
-  } catch (error) {
-      alert(error + " Erro ao tentar deletar o registro")
-  } 
-
+// Form deletar evento
+document.getElementById("formDelete").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const id = document.getElementById("eventList").value;
+    const res = await fetch("http://localhost:8000/api/generic/delete.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ table: "myevent", id_field: "id_myevent", id_value: id })
+    });
+    const data = await res.json();
+    if (data.success) { alert(data.message); loadEvents(); }
+    else { alert("Erro: " + data.error); }
 });
+
 
 loadEvents();
