@@ -25,5 +25,13 @@ try {
     echo json_encode(["success" => true, "message" => "Registro deletado com sucesso!"]);
 
 } catch (PDOException $e) {
+
+    if ($e->getCode() == "23000") {
+        echo json_encode([
+            "success" => false,
+            "error" => "Não é possível excluir esse registro, por que existem dados vinculados a ele!" ]);
+            return;
+         }
+
     echo json_encode(["error" => "Database error: " . $e->getMessage()]);
 }

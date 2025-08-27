@@ -13,6 +13,7 @@ openBtn.onclick = () => {
 
 // Fechar modal (reativa scroll)
 closeBtn.onclick = () => {
+  location.reload()
   modal.style.display = "none";
   document.body.style.overflow = "auto";
 };
@@ -28,7 +29,7 @@ window.onclick = e => {
 async function loadEvents() {
   eventList.innerHTML = "";
   try {
-    const res = await fetch("/api/generic/list.php?table=myevent");
+    const res = await fetch("./api/generic/list.php?table=myevent");
     const data = await res.json();
     data.forEach(ev => {
       const opt = document.createElement("option");
@@ -37,7 +38,7 @@ async function loadEvents() {
       eventList.appendChild(opt);
     });
   } catch (err) {
-    console.error("Erro ao carregar eventos", err);
+    alert("Erro ao carregar os eventos!")
   }
 }
 
@@ -57,14 +58,13 @@ document.getElementById("formAdd").addEventListener("submit", async function(e) 
     e.preventDefault();
     const token = localStorage.getItem("token");
     const formData = Object.fromEntries(new FormData(this));
-    const res = await fetch("http://localhost:8000/api/insert.php", {
+    const res = await fetch("./api/insert.php", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ table: "myevent", values: formData })
     });
     const data = await res.json();
-    console.log(data.success)
-    if (data.success) { alert("Evento adicionado!"); loadEvents(); }
+    if (data.success) { alert(data.message); loadEvents(); location.reload() }
     else { alert("Erro: " + data.error); }
 });
 
@@ -73,15 +73,14 @@ document.getElementById("formAdd").addEventListener("submit", async function(e) 
 document.getElementById("formDelete").addEventListener("submit", async function(e) {
     e.preventDefault();
     const id = document.getElementById("eventList").value;
-    const res = await fetch("http://localhost:8000/api/generic/delete.php", {
+    const res = await fetch("./api/generic/delete.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ table: "myevent", id_field: "id_myevent", id_value: id })
     });
     const data = await res.json();
-    if (data.success) { alert(data.message); loadEvents(); }
+    if (data.success) { alert(data.message); loadEvents(); location.reload() }
     else { alert("Erro: " + data.error); }
 });
-
 
 loadEvents();

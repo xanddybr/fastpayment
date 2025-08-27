@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css"> <!-- estilos próprios -->
     <script src="js/bootstrap.bundle.min.js"></script>
-    
 </head>
 <body>
 <div class="container">
