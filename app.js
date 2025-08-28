@@ -15,12 +15,14 @@ function checkLogin() {
         mostrarLogin();
     }
 }
+
 checkLogin();
 
 function mostrarLogin() {
     document.getElementById("login").style.display = "block";
     document.getElementById("dashboard").style.display = "none";
 }
+
 function mostrarDashboard() {
     document.getElementById("login").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
@@ -46,6 +48,7 @@ async function makeLogin() {
         alert(data.error);
     }
 }
+
 function logout() { localStorage.removeItem("token"); mostrarLogin(); }
 
 // Carregar selects
@@ -56,6 +59,7 @@ async function carregarEventos() {
     select.innerHTML = `<option value='' selected>Selecione um evento</option>` +
         eventos.map(e => `<option value="${e.id_myevent}">${e.myevent}</option>`).join('');
 }
+
 async function carregarTipos() {
     const res = await fetch(`${API_URL}/typeevent.php`);
     const tipos = await res.json();
@@ -63,6 +67,7 @@ async function carregarTipos() {
     select.innerHTML = `<option value='' selected>Tipo</option>` +
         tipos.map(t => `<option value="${t.id_tpevent}">${t.tpevent}</option>`).join('');
 }
+
 async function carregarUnidades() {
     const res = await fetch(`${API_URL}/unidade.php`);
     const unidades = await res.json();
@@ -81,6 +86,7 @@ function carregaHora() {
         select.appendChild(opt);
     }
 }
+
 function carregaMinuto() {
     const select = document.getElementById("minuto");
     select.innerHTML = `<option value='' selected>M</option>`;
@@ -97,10 +103,12 @@ function getDayName(dateString) {
     const date = new Date(year, month - 1, day);
     return ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'][date.getDay()];
 }
+
 function formatDate(isoDate) {
     let [ano, mes, dia] = isoDate.split("-");
     return `${dia}/${mes}/${ano}`;
 }
+
 function getDateTime() {
     const now = new Date();
     return now.toISOString().slice(0,19).replace("T"," ");

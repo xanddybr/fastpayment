@@ -19,14 +19,15 @@
         <div class="mb-3">
             <input type="password" id="senha" class="form-control" placeholder="Senha" required>
         </div>
-        <button class="btn btn-primary w-100" onclick="makeLogin()">Entrar</button>
+        <button class="btn btn-primary w-100" onclick="makeLogin()">Entrar</button><br><br>
+        <center>v 1.0.0b</center>
     </div>
 
     <!-- Dashboard Wrapper -->
     <div id="dashboardWrapper">
         <div id="dashboard" style="display: flex; justify-content: center; margin: 0 -280px 0 -100px">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3>Agenda - Mistura de Luz</h3>
+            <div class="d-flex justify-content-left align-items-center mb-3">
+                <h3>Agenda - Mistura de Luz</h3>&nbsp;&nbsp;
                 <button class="btn btn-danger" onclick="logout()">Sair</button>
             </div>
     <!-- Wrapper para scroll horizontal -->
@@ -112,7 +113,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Meu Modal</h5>
+            <h5 class="modal-title">Eventos</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">

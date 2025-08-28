@@ -9,13 +9,9 @@ meuModal.addEventListener('shown.bs.modal', function () {
     loadEvents(); // sua função que carrega os eventos
 });
 
-// Fechar modal (reativa scroll)
-closeBtn.onclick = () => {
-  modal.style.display = "none";
-  location.reload()
-};
-
-
+meuModal.addEventListener('hidden.bs.modal', function () {
+    location.reload() // sua função que carrega os eventos
+});
 
 // Buscar lista
 async function loadEvents() {
@@ -51,16 +47,21 @@ document.getElementById("formAdd").addEventListener("submit", async function(e) 
 
 // Form deletar evento
 document.getElementById("formDelete").addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const id = document.getElementById("eventList").value;
-    const res = await fetch("./api/generic/delete.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ table: "myevent", id_field: "id_myevent", id_value: id })
-    });
-    const data = await res.json();
-    if (data.success) { alert(data.message); loadEvents(); }
-    else { alert("Erro: " + data.error); }
+  e.preventDefault();
+  if (confirm("Tem certeza que deseja excluir este evento?")) {
+      const id = document.getElementById("eventList").value;
+          const res = await fetch("./api/generic/delete.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ table: "myevent", id_field: "id_myevent", id_value: id })
+          });
+          const data = await res.json();
+          if (data.success) { alert(data.message); loadEvents(); }
+          else { alert("Erro: " + data.error); }
+  }
+    
+    
+    
 });
 
 loadEvents();

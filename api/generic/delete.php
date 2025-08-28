@@ -22,14 +22,14 @@ try {
     $stmt->bindValue(":id_value", $id_value);
     $stmt->execute();
 
-    echo json_encode(["success" => true, "message" => "Registro deletado com sucesso!"]);
+    echo json_encode(["success" => true, "message" => "Deletado com sucesso!"]);
 
 } catch (PDOException $e) {
 
     if ($e->getCode() == "23000") {
         echo json_encode([
             "success" => false,
-            "error" => "Não é possível excluir esse registro, por que existem dados vinculados a ele!" ]);
+            "error" => "Não é possível excluir, por que existem registros vinculados essa informação!" ]);
             return;
          }
 
