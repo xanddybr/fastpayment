@@ -53,28 +53,28 @@ async function carregarEventos() {
     const res = await fetch(`${API_URL}/myevent.php`);
     const eventos = await res.json();
     let select = document.getElementById("evento");
-    select.innerHTML = `<option disabled selected>Selecione um evento</option>` +
+    select.innerHTML = `<option value='' selected>Selecione um evento</option>` +
         eventos.map(e => `<option value="${e.id_myevent}">${e.myevent}</option>`).join('');
 }
 async function carregarTipos() {
     const res = await fetch(`${API_URL}/typeevent.php`);
     const tipos = await res.json();
     let select = document.getElementById("tipo");
-    select.innerHTML = `<option disabled selected>Tipo</option>` +
+    select.innerHTML = `<option value='' selected>Tipo</option>` +
         tipos.map(t => `<option value="${t.id_tpevent}">${t.tpevent}</option>`).join('');
 }
 async function carregarUnidades() {
     const res = await fetch(`${API_URL}/unidade.php`);
     const unidades = await res.json();
     let select = document.getElementById("unidade");
-    select.innerHTML = `<option disabled selected>Unidade</option>` +
+    select.innerHTML = `<option value='' selected>Unidade</option>` +
         unidades.map(u => `<option value="${u.id_units}">${u.units}</option>`).join('');
 }
 
 // Horário
 function carregaHora() {
     const select = document.getElementById("hora");
-    select.innerHTML = `<option disabled selected>H</option>`;
+    select.innerHTML = `<option value='' selected>H</option>`;
     for (let i = 0; i <= 23; i++) {
         let opt = document.createElement("option");
         opt.value = opt.text = i.toString().padStart(2, "0");
@@ -83,7 +83,7 @@ function carregaHora() {
 }
 function carregaMinuto() {
     const select = document.getElementById("minuto");
-    select.innerHTML = `<option disabled selected>M</option>`;
+    select.innerHTML = `<option value='' selected>M</option>`;
     for (let i = 0; i <= 5; i++) {
         let opt = document.createElement("option");
         opt.value = opt.text = i + "0";

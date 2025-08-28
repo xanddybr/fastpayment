@@ -1,29 +1,21 @@
 const modal = document.getElementById("myModal");
-const openBtn = document.getElementById("openModal");
+const openBtn = document.getElementById("openModalEvent");
 const closeBtn = document.getElementById("closeModal");
 const formDelete = document.getElementById("formDelete");
 const eventList = document.getElementById("eventList");
 
 // Abrir modal (desabilita scroll da página)
-openBtn.onclick = () => {
-  modal.style.display = "block";
-  document.body.style.overflow = "hidden";
-  loadEvents();
-};
+meuModal.addEventListener('shown.bs.modal', function () {
+    loadEvents(); // sua função que carrega os eventos
+});
 
 // Fechar modal (reativa scroll)
 closeBtn.onclick = () => {
-  location.reload()
   modal.style.display = "none";
-  document.body.style.overflow = "auto";
+  location.reload()
 };
 
-window.onclick = e => {
-  if (e.target === modal) {
-    modal.style.display = "none";
-    document.body.style.overflow = "auto";
-  }
-};
+
 
 // Buscar lista
 async function loadEvents() {
@@ -38,21 +30,9 @@ async function loadEvents() {
       eventList.appendChild(opt);
     });
   } catch (err) {
-    alert("Erro ao carregar os eventos!")
+    alert("Erro no carregamento das informações!")
   }
 }
-
-// Adicionar evento
-/*
-{
-    "table":"myevent",
-    "values":{
-        "id_myevent": null,
-        "myevent":"Reiki 2",
-        "price": 300.00
-}*/
-
-// Form adicionar evento
 
 document.getElementById("formAdd").addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -64,7 +44,7 @@ document.getElementById("formAdd").addEventListener("submit", async function(e) 
         body: JSON.stringify({ table: "myevent", values: formData })
     });
     const data = await res.json();
-    if (data.success) { alert(data.message); loadEvents(); location.reload() }
+    if (data.success) { alert(data.message); loadEvents(); }
     else { alert("Erro: " + data.error); }
 });
 
@@ -79,7 +59,7 @@ document.getElementById("formDelete").addEventListener("submit", async function(
         body: JSON.stringify({ table: "myevent", id_field: "id_myevent", id_value: id })
     });
     const data = await res.json();
-    if (data.success) { alert(data.message); loadEvents(); location.reload() }
+    if (data.success) { alert(data.message); loadEvents(); }
     else { alert("Erro: " + data.error); }
 });
 

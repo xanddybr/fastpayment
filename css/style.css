@@ -8,6 +8,7 @@ body {
     max-width: 650px;
     margin-top: 50px;
     margin-right: 400px;
+    margin-left: 220px;
 }
 
 /* Login centralizado */
@@ -92,3 +93,4 @@ input, select {
 .modal-content form button:hover {
     background: #45a049;
 }
+
