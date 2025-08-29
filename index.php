@@ -57,7 +57,7 @@
 
     <!-- Botão entre evento e tipo -->
     <div class="me-2" style="width:50px;">
-      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#meuModal">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('event')">+</button>
     </div>
 
     <!-- Tipo -->
@@ -67,7 +67,7 @@
 
     <!-- Botão entre tipo e unidade -->
     <div class="me-2" style="width:50px;">
-      <button type="button" class="btn btn-primary btn-sm w-100" id="openModalEvent">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('tpevent')">+</button>
     </div>
 
     <!-- Unidade -->
@@ -77,7 +77,7 @@
 
     <!-- Botão entre unidade e quantidade -->
     <div class="me-2" style="width:50px;">
-      <button type="button" class="btn btn-primary btn-sm w-100" onclick="abrirModal('unidade')">+</button>
+     <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('unidade')">+</button>
     </div>
 
     <!-- Vagas -->
@@ -107,9 +107,33 @@
   </table>
 </div>
 
-    <!-- Modal -->
+  <!-- Modal Genérico -->
+  <div class="modal fade" id="genericModal" data-bs-backdrop="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="genericModalTitle">Cadastro</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+              <form id="genericFormAdd">
+                  <input type="text" id="genericInput" name="genericInput" placeholder="" required>
+                  <input type="number" step="0.01" id="genericPrice" name="genericPrice" placeholder="Preço" style="display:none;">
+                  <button type="submit">Adicionar</button>
+              </form>
+              <form id="genericFormDelete">
+                  <select id="genericSelect" name="genericSelect" size="5" required></select>
+                  <button type="submit">Deletar</button>
+              </form>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- Event Modal 
         
-<div class="modal fade" id="meuModal" data-bs-backdrop="false" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="eventModal" data-bs-backdrop="false" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
@@ -130,57 +154,9 @@
         </div>
     </div>
     </div>
+-->
 
-<!-- Modal Event 
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h6>Cadastrar Evento</h6>
-        <form id="formAdd">
-            <input type="text" name="myevent" placeholder="Nome do Evento" required>
-            <input type="number" step="0.01" name="price" placeholder="Preço" required>
-            <button type="submit">Adicionar</button>
-        </form>
-        <form id="formDelete">
-            <select id="eventList" name="eventList" size="5" required></select>
-            <button type="submit">Deletar</button>
-        </form>
-    </div>
-</div>-->
 
-<!-- Modal TypeEvent 
-<div id="myModal" class="modalType">
-    <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h6>Cadastrar Evento</h6>
-        <form id="formAdd">
-            <input type="text" name="myevent" placeholder="Nome do Evento" required>
-            <input type="number" step="0.01" name="price" placeholder="Preço" required>
-            <button type="submit">Adicionar</button>
-        </form>
-        <form id="formDelete">
-            <select id="eventList" name="eventList" size="5" required></select>
-            <button type="submit">Deletar</button>
-        </form>
-    </div>
-</div>-->
-
-<!-- Modal Unidades
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h6>Cadastrar Evento</h6>
-        <form id="formAdd">
-            <input type="text" name="myevent" placeholder="Nome do Evento" required>
-            <input type="number" step="0.01" name="price" placeholder="Preço" required>
-            <button type="submit">Adicionar</button>
-        </form>
-        <form id="formDelete">
-            <select id="eventList" name="eventList" size="5" required></select>
-            <button type="submit">Deletar</button>
-        </form>
-    </div>
-</div> -->
 
 <!-- Scripts -->
 <script src="app.js"></script>
