@@ -6,7 +6,7 @@ try {
     $stmt = $pdo->prepare("
         SELECT 
             id_schedule AS IdSch,
-            DATE_FORMAT(date, '%d/%m/%Y') AS Data,
+            date AS Date,
             time AS Hora,
             myevent AS Evento,
             tpEvent AS Tipo,
@@ -18,7 +18,7 @@ try {
             myevent m ON s.id_myevent = m.id_myevent
         INNER JOIN 
             typeevent t ON s.id_tpEvent = t.id_tpEvent
-        ORDER BY s.date, s.time
+        ORDER BY s.date DESC
     ");
     
     $stmt->execute();

@@ -4,287 +4,162 @@
     <meta charset="UTF-8">
     <title>FastPayment</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css"> <!-- estilos próprios -->
     <script src="js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            max-width: 900px;
-            margin-top: 50px;
-            margin-right: 400px;
-            
-        }
-
-        /* Login centralizado */
-        #login {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 30px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-
-        /* Dashboard escondido inicialmente */
-        #dashboard {
-            display: none;
-        }
-
-        /* Tabela larga */
-        table {
-            width: 100%;
-        }
-
-        th, td {
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        /* Inputs e selects */
-        input, select {
-            min-width: 100%;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
 
     <!-- Login -->
     <div id="login">
-        <h3 class="mb-3 text-center">Login</h3>
+        <h3 class="mb-3 text-center">FastPayment</h3>
         <div class="mb-3">
             <input type="email" id="email" class="form-control" placeholder="Seu e-mail" required>
         </div>
         <div class="mb-3">
             <input type="password" id="senha" class="form-control" placeholder="Senha" required>
         </div>
-        <button class="btn btn-primary w-100" onclick="makeLogin()">Entrar</button>
+        <button class="btn btn-primary w-100" onclick="makeLogin()">Entrar</button><br><br>
+        <center>v 1.0.0b</center>
     </div>
 
     <!-- Dashboard Wrapper -->
-<div id="dashboardWrapper" style="width: 130%; margin: 0 auto;">
+    <div id="dashboardWrapper">
+        <div id="dashboard" style="display: flex; justify-content: center; margin: 0 -280px 0 -100px">
+            <div class="d-flex justify-content-left align-items-center mb-3">
+                <h3>Agenda - Mistura de Luz</h3>&nbsp;&nbsp;
+                <button class="btn btn-danger" onclick="logout()">Sair</button>
+            </div>
+    <!-- Wrapper para scroll horizontal -->
+    <div style="width: 130%; overflow-x: auto;">
+    <h5>Preencha as informações do evento:</h5>
 
-    <!-- Dashboard Wrapper -->
-<div id="dashboardWrapper" style="display: flex; justify-content: center;">
+    <!-- Wrapper para scroll horizontal -->
+    <div style="width: 100%; overflow-x: auto;">
+    <form id="formAgendamento" class="d-flex flex-nowrap align-items-center mb-4" style="min-width: 1200px;">
 
-    <!-- Dashboard Container -->
-    <div id="dashboard" style="width: 130%;">
+    <div class="me-2" style="width:150px;">
+      <input type="date" id="data" class="form-control" required>
+    </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>Mistura de Luz</h3>
-            <button class="btn btn-danger" onclick="logout()">Sair</button>
+    <div class="me-2" style="width:80px;">
+      <select id="hora" class="form-control" required></select>
+    </div>
+
+    <div class="me-2" style="width:80px;">
+      <select id="minuto" class="form-control" required></select>
+    </div>
+
+    <!-- Evento -->
+    <div class="me-2" style="width:220px;">
+      <select id="evento" class="form-select" required></select>
+    </div>
+
+    <!-- Botão entre evento e tipo -->
+    <div class="me-2" style="width:50px;">
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('event')">+</button>
+    </div>
+
+    <!-- Tipo -->
+    <div class="me-2" style="width:180px;">
+      <select id="tipo" class="form-select" required></select>
+    </div>
+
+    <!-- Botão entre tipo e unidade -->
+    <div class="me-2" style="width:50px;">
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('tpevent')">+</button>
+    </div>
+
+    <!-- Unidade -->
+    <div class="me-2" style="width:200px;">
+      <select id="unidade" class="form-select" required></select>
+    </div>
+
+    <!-- Botão entre unidade e quantidade -->
+    <div class="me-2" style="width:50px;">
+     <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('unidade')">+</button>
+    </div>
+
+    <!-- Vagas -->
+    <div class="me-2" style="width:100px;">
+      <input type="number" id="vagas" class="form-control" placeholder="Qtd" required>
+    </div>
+
+    <!-- Salvar -->
+    <div style="width:120px;">
+      <button type="submit" class="btn btn-success w-100">Salvar</button>
+    </div>
+  </form>
+</div>
+
+
+<h5>Datas disponibilizadas em sua agenda:</h5>
+<div style="width: 100%; overflow-x:auto;">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Dia</th><th>Data</th><th>Hora</th><th>Evento</th>
+        <th>Tipo</th><th>Modo/Unidade</th><th>Preço</th>
+        <th>Vaga(s)</th><th>Excluir</th>
+      </tr>
+    </thead>
+    <tbody id="tabelaAgendamentos"></tbody>
+  </table>
+</div>
+
+  <!-- Modal Genérico -->
+  <div class="modal fade" id="genericModal" data-bs-backdrop="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="genericModalTitle">Cadastro</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+              <form id="genericFormAdd">
+                  <input type="text" id="genericInput" name="genericInput" placeholder="" required>
+                  <input type="number" step="0.01" id="genericPrice" name="genericPrice" placeholder="Preço" style="display:none;">
+                  <button type="submit">Adicionar</button>
+              </form>
+              <form id="genericFormDelete">
+                  <select id="genericSelect" name="genericSelect" size="5" required></select>
+                  <button type="submit">Deletar</button>
+              </form>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- Event Modal 
+        
+<div class="modal fade" id="eventModal" data-bs-backdrop="false" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Eventos</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
-
-        <h5>Cadastro de Agendamento</h5>
-        <form id="formAgendamento" class="row g-2 mb-4" style="width: 100%;">
-            <div class="col-md-2">
-                <input type="text" id="data" class="form-control" maxlength="10" placeholder="dd/mm/yyyy" required>
-            </div>
-            <div class="col-md-2">
-                <input type="text" id="hora" class="form-control" placeholder="00:00" required>
-            </div>
-            <div class="col-md-3">
-                <select id="evento" class="form-select" required></select>
-            </div>
-            <div class="col-md-3">
-                <select id="tipo" class="form-select" required></select>
-            </div>
-            <div class="col-md-2">
-                <input type="number" id="vagas" class="form-control" placeholder="Qtd vagas" required>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-success w-100">Salvar</button>
-            </div>
+        <div class="modal-body">
+            <form id="formAdd">
+            <input type="text" name="myevent" placeholder="Nome do Evento" required>
+            <input type="number" step="0.01" name="price" placeholder="Preço" required>
+            <button type="submit">Adicionar</button>
         </form>
-
-        <h5>Agenda Mistura de Luz</h5>
-        <div style="width: 100%; overflow-x:auto;">
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th>Dia</th>
-                    <th>Data</th>
-                    <th>Hora</th>
-                    <th>Evento</th>
-                    <th>Tipo</th>
-                    <th>Modo/Unidade</th>
-                    <th>Preço</th>
-                    <th>Vagas</th>
-                    <th>Excluir</th>
-                </tr>
-                </thead>
-                <tbody id="tabelaAgendamentos"></tbody>
-            </table>
+        <form id="formDelete">
+            <select id="eventList" name="eventList" size="5" required></select>
+            <button type="submit">Deletar</button>
+        </form>
         </div>
+        </div>
+    </div>
+    </div>
+-->
 
-    </div> <!-- Fim do Dashboard Container -->
-
-</div> <!-- Fim do Dashboard Wrapper -->
 
 
-
-<script>
-const API_URL = "api";
-
-// Mostra login ou dashboard dependendo do token
-function checkLogin() {
-    const token = localStorage.getItem("token");
-    if (token) {
-        mostrarDashboard();
-        carregarEventos();
-        carregarTipos();
-        carregarAgendamentos();
-    } else {
-        mostrarLogin();
-    }
-}
-
-function mostrarLogin() {
-    document.getElementById("login").style.display = "block";
-    document.getElementById("dashboard").style.display = "none";
-}
-
-function mostrarDashboard() {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-}
-
-// Login
-async function makeLogin() {
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-
-    const res = await fetch(`${API_URL}/login.php`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password: senha })
-    });
-
-    const data = await res.json();
-    if (data.token) {
-        localStorage.setItem("token", data.token);
-        mostrarDashboard();
-        carregarEventos();
-        carregarTipos();
-        carregarAgendamentos();
-    } else {
-        alert(data.error);
-    }
-}
-
-// Logout
-function logout() {
-    localStorage.removeItem("token");
-    mostrarLogin();
-}
-
-// Carregar eventos e tipos
-async function carregarEventos() {
-    const res = await fetch(`${API_URL}/myevent.php`);
-    const eventos = await res.json();
-    let select = document.getElementById("evento");
-    select.innerHTML = eventos.map(e => `<option value="${e.id_myevent}">${e.myevent}</option>`).join('');
-}
-
-async function carregarTipos() {
-    const res = await fetch(`${API_URL}/typeevent.php`);
-    const tipos = await res.json();
-    let select = document.getElementById("tipo");
-    select.innerHTML = tipos.map(t => `<option value="${t.id_tpevent}">${t.tpevent}</option>`).join('');
-}
-
-// Função utilitária para nome do dia
-function getDayName(dateString) {
-    const [day, month, year] = dateString.split('/');
-    const date = new Date(year, month - 1, day);
-    const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-    return dayNames[date.getDay()];
-}
-
-// Carregar agendamentos
-async function carregarAgendamentos() {
-    const res = await fetch(`${API_URL}/schedule.php`);
-    const agendamentos = await res.json();
-    let tabela = document.getElementById("tabelaAgendamentos");
-    tabela.innerHTML = agendamentos.map(a => `
-        <tr>
-            <td>${getDayName(a.date)}</td>
-            <td>${a.date}</td>
-            <td>${a.time}</td>
-            <td>${a.myevent}</td>
-            <td>${a.tpevent}</td>
-            <td>${a.units}</td>
-            <td>R$${a.price}</td>
-            <td>${a.vacancies}</td>
-            <td><button class="btn btn-danger btn-sm" onclick="deletarAgendamento(${a.id_schedule})">Excluir</button></td>
-        </tr>
-    `).join('');
-}
-
-// Deletar agendamento
-function deletarAgendamento(id) {
-    if (confirm("Tem certeza que deseja excluir este agendamento?")) {
-        fetch(`${API_URL}/generic/delete.php`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ table: "schedule", id_field: "id_schedule", id_value: id })
-        })
-        .then(res => res.json())
-        .then(result => {
-            if (result.success) {
-                alert("Agendamento excluído!");
-                carregarAgendamentos();
-            } else {
-                alert("Erro ao excluir: " + result.error);
-            }
-        });
-    }
-}
-
-// Salvar agendamento
-document.getElementById("formAgendamento").addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    const data = {
-        table: "schedule",
-        values: {
-            date: document.getElementById("data").value,
-            time: document.getElementById("hora").value,
-            id_myevent: parseInt(document.getElementById("evento").value),
-            id_tpEvent: parseInt(document.getElementById("tipo").value),
-            id_units: 1,
-            vacancies: parseInt(document.getElementById("vagas").value)
-        }
-    };
-
-    try {
-        const response = await fetch(`${API_URL}/insert.php`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify(data)
-        });
-
-        if(!response.ok) {
-            alert('Não foi possível salvar seu agendamento');
-        } else {
-            alert("Agendamento realizado com sucesso!");
-            carregarAgendamentos();
-            this.reset();
-        }
-    } catch (error) {
-        console.error("Erro ao inserir dados:", error);
-        alert("Ocorreu um erro ao enviar os dados.");
-    }
-});
-
-// Inicializa
-checkLogin();
-</script>
+<!-- Scripts -->
+<script src="app.js"></script>
+<script src="modal.js"></script>
 </body>
 </html>
