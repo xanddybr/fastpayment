@@ -117,8 +117,8 @@
           </div>
           <div class="modal-body">
               <form id="genericFormAdd">
-                  <input type="text" id="genericInput" name="genericInput" placeholder="" required>
-                  <input type="number" step="0.01" id="genericPrice" name="genericPrice" placeholder="Preço" style="display:none;">
+                  <input type="text" id="genericInput" name="myevent" placeholder="" required>
+                  <input type="number" step="0.01" id="genericPrice" name="price" placeholder="Preço" style="display:none;">
                   <button type="submit">Adicionar</button>
               </form>
               <form id="genericFormDelete">
