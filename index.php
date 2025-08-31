@@ -57,7 +57,7 @@
 
     <!-- Botão entre evento e tipo -->
     <div class="me-2" style="width:50px;">
-      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('event')">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('Eventos')">+</button>
     </div>
 
     <!-- Tipo -->
@@ -67,7 +67,7 @@
 
     <!-- Botão entre tipo e unidade -->
     <div class="me-2" style="width:50px;">
-      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('tpevent')">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('tipoEvento')">+</button>
     </div>
 
     <!-- Unidade -->
@@ -129,33 +129,6 @@
       </div>
     </div>
   </div>
-
-
-    <!-- Event Modal 
-        
-<div class="modal fade" id="eventModal" data-bs-backdrop="false" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Eventos</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body">
-            <form id="formAdd">
-            <input type="text" name="myevent" placeholder="Nome do Evento" required>
-            <input type="number" step="0.01" name="price" placeholder="Preço" required>
-            <button type="submit">Adicionar</button>
-        </form>
-        <form id="formDelete">
-            <select id="eventList" name="eventList" size="5" required></select>
-            <button type="submit">Deletar</button>
-        </form>
-        </div>
-        </div>
-    </div>
-    </div>
--->
-
 
 
 <!-- Scripts -->

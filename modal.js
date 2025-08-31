@@ -1,122 +1,72 @@
-const eventModal = document.getElementById("eventModal");
-const tpeventModal = document.getElementById("tpeventModal");
-const unidadeModal = document.getElementById("unidadeModal");
-
 const closeBtn = document.getElementById("closeModal");
 const formDelete = document.getElementById("formDelete");
 const genericSelect = document.getElementById("genericSelect");
 
-
-
 function openGenericModal(type) {
-    const modalTitle = document.getElementById("genericModalTitle");
-    const input = document.getElementById("genericInput");
-    const priceField = document.getElementById("genericPrice");
-    
-    // Configuração dinâmica
-    switch (type) {
-    case "event":
-        modalTitle.textContent = "Eventos";
-        input.placeholder = "Nome do Evento";
-        priceField.style.display = "block";
-        loadEvents();
-        break;
+  const modalTitle = document.getElementById("genericModalTitle");
+  const input = document.getElementById("genericInput");
+  const priceField = document.getElementById("genericPrice");
 
-    case "tpevent":
-        modalTitle.textContent = "Tipo de Evento";
-        input.placeholder = "Tipo do Evento";
-        priceField.style.display = "none";
-        loadTpEvents()
-        break;
+  switch (type) {
+    case "Eventos":
+      modalTitle.textContent = "Eventos";
+      input.placeholder = "Nome do Evento";
+      priceField.style.display = "block";
+      loadGenericSelect("myevent", "id_myevent", ["myevent","price"]);
+      break;
+
+    case "tipoEvento":
+      modalTitle.textContent = "Tipo de Evento";
+      input.placeholder = "Tipo do Evento";
+      priceField.style.display = "none";
+      loadGenericSelect("typeevent", "id_tpevent", ["tpevent"]);
+      break;
 
     case "unidade":
-        modalTitle.textContent = "Unidades";
-        input.placeholder = "Nome da Unidade";
-        priceField.style.display = "none";
-        loadUnits();
-        break;
+      modalTitle.textContent = "Unidades";
+      input.placeholder = "Nome da Unidade";
+      priceField.style.display = "none";
+      loadGenericSelect("units", "id_units", ["units"]);
+      break;
 
     default:
-        console.warn("Tipo de modal não reconhecido:", type);
-        modalTitle.textContent = "Cadastro";
-        input.placeholder = "Digite aqui";
-        priceField.style.display = "none";
-}
-
-    // Aqui você também pode mudar o endpoint de carregamento/deleção
-    // Exemplo:
-    // loadOptions(type); // popula o select de acordo com type
+      console.warn("Tipo de modal não reconhecido:", type);
+      modalTitle.textContent = "Cadastro";
+      input.placeholder = "Digite aqui";
+      priceField.style.display = "none";
+  }
 
     const modal = new bootstrap.Modal(document.getElementById("genericModal"));
     modal.show();
-   
 }
-
-
-
-/*
-eventModal.addEventListener('shown.bs.modal', function () {
-    loadEvents(); // sua função que carrega os eventos
-});
-
-eventModal.addEventListener('hidden.bs.modal', function () {
-    location.reload() // sua função que carrega os eventos
-}); */
-
-
-
 
 // Carrega eventos
-async function loadEvents() {
+async function loadGenericSelect(table, idField, textFields = []) {
   genericSelect.innerHTML = "";
   try {
-    const res = await fetch("./api/generic/list.php?table=myevent");
+    const res = await fetch(`./api/generic/list.php?table=${table}`);
     const data = await res.json();
-    data.forEach(ev => {
+
+    data.forEach(row => {
       const opt = document.createElement("option");
-      opt.value = ev.id_myevent;
-      opt.textContent = `${ev.myevent} - R$ ${parseFloat(ev.price).toFixed(2)}`;
+      opt.value = row[idField];
+
+      let textParts = textFields.map(field => {
+        if (field === "price") {
+          return "R$ " + parseFloat(row[field]).toFixed(2);
+        }
+        return row[field];
+      });
+
+      opt.textContent = textParts.join(" - ");
       genericSelect.appendChild(opt);
     });
+
   } catch (err) {
-    alert("Erro no carregamento das informações!")
+    alert("Erro no carregamento das informações!");
+    console.error(err);
   }
 }
-
-// Carrega tipo de eventos
-async function loadTpEvents() {
-  genericSelect.innerHTML = "";
-  try {
-    const res = await fetch("./api/generic/list.php?table=typeevent");
-    const data = await res.json();
-    data.forEach(ev => {
-      const opt = document.createElement("option");
-      opt.value = ev.id_tpevent;
-      opt.textContent = `${ev.tpevent}`;
-      genericSelect.appendChild(opt);
-    });
-  } catch (err) {
-    alert("Erro no carregamento das informações!")
-  }
-}
-
-// Carrega unidades
-async function loadUnits() {
-  genericSelect.innerHTML = "";
-  try {
-    const res = await fetch("./api/generic/list.php?table=units");
-    const data = await res.json();
-    data.forEach(ev => {
-      const opt = document.createElement("option");
-      opt.value = ev.id_units;
-      opt.textContent = `${ev.units}`;
-      genericSelect.appendChild(opt);
-    });
-  } catch (err) {
-    alert("Erro no carregamento das informações!")
-  }
-}
-
 
 
 // Form inserir
@@ -150,5 +100,3 @@ document.getElementById("genericFormDelete").addEventListener("submit", async fu
           else { alert("Erro: " + data.error); }
   }         
 });
-
-loadTpEvents();
