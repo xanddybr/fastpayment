@@ -27,6 +27,6 @@ try {
     echo json_encode(["success" => true, "message" => "Registro adicionado com sucesso!"]);
 
 } catch (PDOException $e) {
-    echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["error" => "Database error API: " . $e->getMessage()]);
 }
 

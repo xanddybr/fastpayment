@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>FastPayment</title>
+    <title>FastPayment by Mistura de Luz</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css"> <!-- estilos próprios -->
     <script src="js/bootstrap.bundle.min.js"></script>
@@ -97,7 +97,15 @@
 
     <!-- Botão entre tipo e unidade -->
     <div class="me-2" style="width:50px;">
-      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('tipoEvento')">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
+          title: 'Tipo de Evento',
+          inputPlaceholder: 'Tipo do Evento',
+          showPrice: false,
+          table: 'typeevent',
+          idField: 'id_tpevent',
+          selectId: 'genericSelect',
+          fieldsToLoad: ['tpevent']
+        });">+</button>
     </div>
 
     <!-- Unidade -->
@@ -107,7 +115,15 @@
 
     <!-- Botão entre unidade e quantidade -->
     <div class="me-2" style="width:50px;">
-     <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('unidade')">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
+          title: 'Unidades',
+          inputPlaceholder: 'Nome da Unidade',
+          showPrice: false,
+          table: 'units',
+          idField: 'id_units',
+          selectId: 'genericSelect',
+          fieldsToLoad: ['units']
+        });">+</button>
     </div>
 
     <!-- Vagas -->
