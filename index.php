@@ -79,7 +79,15 @@
 
     <!-- Botão entre evento e tipo -->
     <div class="me-2" style="width:50px;">
-      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('Eventos')">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
+          title: 'Eventos',
+          inputPlaceholder: 'Nome do Evento',
+          showPrice: true,
+          table: 'myevent',
+          idField: 'id_myevent',
+          selectId: 'genericSelect',
+          fieldsToLoad: ['myevent','price']
+        });">+</button>
     </div>
 
     <!-- Tipo -->

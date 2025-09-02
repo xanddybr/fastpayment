@@ -3,7 +3,33 @@ const formAdd = document.getElementById("genericFormAdd");
 const genericSelect = document.getElementById("genericSelect");
 const genericModal = document.getElementById("genericModal");
 
-//
+function openGenericModal(config) {
+  const modalTitle = document.getElementById("genericModalTitle");
+  const input = document.getElementById("genericInput");
+  const priceField = document.getElementById("genericPrice");
+
+  // Atualiza os elementos do modal
+  modalTitle.textContent = config.title;
+  input.placeholder = config.inputPlaceholder;
+  priceField.style.display = config.showPrice ? "block" : "none";
+
+  // Salva a configuração global para uso em insert/delete/load
+  currentConfig = {
+    table: config.table,
+    idField: config.idField,
+    selectId: config.selectId,
+    fieldsToLoad: config.fieldsToLoad
+  };
+
+  // Carrega os dados no select automaticamente
+  //loadGenericSelect();
+
+  // Abre o modal
+  const modal = new bootstrap.Modal(document.getElementById("genericModal"));
+  modal.show();
+}
+
+/*
 genericModal.addEventListener('hidden.bs.modal', function () {
     formAdd.reset()
     location.reload(); 
@@ -46,7 +72,7 @@ function openGenericModal(type) {
     const modal = new bootstrap.Modal(document.getElementById("genericModal"));
     modal.show();
 }
-
+*/
 
 // Carrega eventos
 async function loadGenericSelect(table, idField, textFields = []) {
