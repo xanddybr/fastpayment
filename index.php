@@ -8,8 +8,30 @@
     <script src="js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div class="container">
 
+<nav class="navbar navbar-expand-md navbar-dark bg-dark" id="navMistura">
+   <div class="container-fluid">
+    <a class="navbar-brand" href="#">Mistura de Luz</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Agenda</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Inscrições</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Histórico</a>
+        </li>
+      </ul>
+  </div>
+</div>
+</nav>
+
+<div class="container">
     <!-- Login -->
     <div id="login">
         <h3 class="mb-3 text-center">FastPayment</h3>
@@ -27,7 +49,7 @@
     <div id="dashboardWrapper">
         <div id="dashboard" style="display: flex; justify-content: center; margin: 0 -280px 0 -100px">
             <div class="d-flex justify-content-left align-items-center mb-3">
-                <h3>Agenda - Mistura de Luz</h3>&nbsp;&nbsp;
+                <h3>Agenda</h3>&nbsp;&nbsp;
                 <button class="btn btn-danger" onclick="logout()">Sair</button>
             </div>
     <!-- Wrapper para scroll horizontal -->

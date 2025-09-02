@@ -1,4 +1,3 @@
-
 const formDelete = document.getElementById("genericFormDelete");
 const formAdd = document.getElementById("genericFormAdd");
 const genericSelect = document.getElementById("genericSelect");
@@ -88,11 +87,8 @@ document.getElementById("genericFormAdd").addEventListener("submit", async funct
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ table: "myevent", values: formData })
     });
-
-    
     const data = await res.json();
     if (data.success) { alert(data.message); loadGenericSelect("myevent", "id_myevent", ["myevent","price"]); formAdd.reset() }
-
 });
 
 
@@ -106,8 +102,8 @@ document.getElementById("genericFormDelete").addEventListener("submit", async fu
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ table: "myevent", id_field: "id_myevent", id_value: id })
           });
-
           loadGenericSelect("myevent", "id_myevent", ["myevent","price"]);
           const data = await res.json();
           if (!data.success) { alert(data.error); }}
 });
+
