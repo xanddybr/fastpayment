@@ -3,8 +3,8 @@
 
 $host = "localhost";
 $db = "u617177303_fastpay";
-$user = "root"; // ou outro usuário
-$pass = "";     // ou a senha correta
+$user = "u617177303_root"; // ou outro usuário
+$pass = "Mistura#1";     // ou a senha correta
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
