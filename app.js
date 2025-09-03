@@ -1,5 +1,4 @@
 const API_URL = "api";
-
 // Verifica login
 function checkLogin() {
     const token = localStorage.getItem("token");
