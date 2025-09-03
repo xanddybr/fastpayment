@@ -40,7 +40,7 @@
   </div>
 
   <script>
-    fetch('http://localhost:8000/api/schedule/list_schedule_custom.php')
+    fetch('http://localhost/api/schedule/list_schedule_custom.php')
       .then(response => response.json())
       .then(data => {
         const tbody = document.getElementById("scheduleTableBody");
