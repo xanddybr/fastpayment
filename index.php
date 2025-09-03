@@ -2,14 +2,36 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>FastPayment</title>
+    <title>FastPayment by Mistura de Luz</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css"> <!-- estilos próprios -->
     <script src="js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div class="container">
 
+<nav class="navbar navbar-expand-md navbar-dark bg-dark" id="navMistura">
+   <div class="container-fluid">
+    <a class="navbar-brand" href="#">Mistura de Luz</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Agenda</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Inscrições</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Histórico</a>
+        </li>
+      </ul>
+  </div>
+</div>
+</nav>
+
+<div class="container">
     <!-- Login -->
     <div id="login">
         <h3 class="mb-3 text-center">FastPayment</h3>
@@ -27,7 +49,7 @@
     <div id="dashboardWrapper">
         <div id="dashboard" style="display: flex; justify-content: center; margin: 0 -280px 0 -100px">
             <div class="d-flex justify-content-left align-items-center mb-3">
-                <h3>Agenda - Mistura de Luz</h3>&nbsp;&nbsp;
+                <h3>Agenda</h3>&nbsp;&nbsp;
                 <button class="btn btn-danger" onclick="logout()">Sair</button>
             </div>
     <!-- Wrapper para scroll horizontal -->
@@ -57,7 +79,16 @@
 
     <!-- Botão entre evento e tipo -->
     <div class="me-2" style="width:50px;">
-      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('event')">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
+          title: 'Eventos',
+          inputPlaceholder1: 'Nome do Evento',
+          inputPlaceholder2: 'Preço',
+          showPrice: true,
+          table: 'myevent',
+          idField: 'id_myevent',
+          selectId: 'genericSelect',
+          fieldsToLoad: ['myevent','price']
+        });">+</button>
     </div>
 
     <!-- Tipo -->
@@ -67,7 +98,15 @@
 
     <!-- Botão entre tipo e unidade -->
     <div class="me-2" style="width:50px;">
-      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('tpevent')">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
+          title: 'Tipo de Evento',
+          inputPlaceholder1: 'Tipo do Evento',
+          showPrice: false,
+          table: 'typeevent',
+          idField: 'id_tpevent',
+          selectId: 'genericSelect',
+          fieldsToLoad: ['tpevent']
+        });">+</button>
     </div>
 
     <!-- Unidade -->
@@ -77,7 +116,15 @@
 
     <!-- Botão entre unidade e quantidade -->
     <div class="me-2" style="width:50px;">
-     <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal('unidade')">+</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
+          title: 'Unidades',
+          inputPlaceholder1: 'Nome da Unidade',
+          showPrice: false,
+          table: 'units',
+          idField: 'id_units',
+          selectId: 'genericSelect',
+          fieldsToLoad: ['units']
+        });">+</button>
     </div>
 
     <!-- Vagas -->
@@ -117,8 +164,8 @@
           </div>
           <div class="modal-body">
               <form id="genericFormAdd">
-                  <input type="text" id="genericInput" name="genericInput" placeholder="" required>
-                  <input type="number" step="0.01" id="genericPrice" name="genericPrice" placeholder="Preço" style="display:none;">
+                  <input type="text" id="genericInput1" name="" placeholder="" required>
+                  <input type="number" step="0.01" id="genericInput2" name="" placeholder="" style="display:none;">
                   <button type="submit">Adicionar</button>
               </form>
               <form id="genericFormDelete">
@@ -129,33 +176,6 @@
       </div>
     </div>
   </div>
-
-
-    <!-- Event Modal 
-        
-<div class="modal fade" id="eventModal" data-bs-backdrop="false" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Eventos</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body">
-            <form id="formAdd">
-            <input type="text" name="myevent" placeholder="Nome do Evento" required>
-            <input type="number" step="0.01" name="price" placeholder="Preço" required>
-            <button type="submit">Adicionar</button>
-        </form>
-        <form id="formDelete">
-            <select id="eventList" name="eventList" size="5" required></select>
-            <button type="submit">Deletar</button>
-        </form>
-        </div>
-        </div>
-    </div>
-    </div>
--->
-
 
 
 <!-- Scripts -->

@@ -21,11 +21,13 @@ checkLogin();
 function mostrarLogin() {
     document.getElementById("login").style.display = "block";
     document.getElementById("dashboard").style.display = "none";
+    document.getElementById("navMistura").style.display = "none";
 }
 
 function mostrarDashboard() {
     document.getElementById("login").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
+     document.getElementById("navMistura").style.display = "block";
 }
 
 // Login

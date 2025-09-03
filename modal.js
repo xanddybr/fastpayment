@@ -1,154 +1,194 @@
-const eventModal = document.getElementById("eventModal");
-const tpeventModal = document.getElementById("tpeventModal");
-const unidadeModal = document.getElementById("unidadeModal");
+const formDelete = document.getElementById("genericFormDelete");
+const formAdd = document.getElementById("genericFormAdd");
 
-const closeBtn = document.getElementById("closeModal");
-const formDelete = document.getElementById("formDelete");
-const genericSelect = document.getElementById("genericSelect");
+// Variável global para guardar os parâmetros atuais do modal
+let currentConfig = null;
 
-
-
-function openGenericModal(type) {
-    const modalTitle = document.getElementById("genericModalTitle");
-    const input = document.getElementById("genericInput");
-    const priceField = document.getElementById("genericPrice");
-    
-    // Configuração dinâmica
-    switch (type) {
-    case "event":
-        modalTitle.textContent = "Eventos";
-        input.placeholder = "Nome do Evento";
-        priceField.style.display = "block";
-        loadEvents();
-        break;
-
-    case "tpevent":
-        modalTitle.textContent = "Tipo de Evento";
-        input.placeholder = "Tipo do Evento";
-        priceField.style.display = "none";
-        loadTpEvents()
-        break;
-
-    case "unidade":
-        modalTitle.textContent = "Unidades";
-        input.placeholder = "Nome da Unidade";
-        priceField.style.display = "none";
-        loadUnits();
-        break;
-
-    default:
-        console.warn("Tipo de modal não reconhecido:", type);
-        modalTitle.textContent = "Cadastro";
-        input.placeholder = "Digite aqui";
-        priceField.style.display = "none";
-}
-
-    // Aqui você também pode mudar o endpoint de carregamento/deleção
-    // Exemplo:
-    // loadOptions(type); // popula o select de acordo com type
-
-    const modal = new bootstrap.Modal(document.getElementById("genericModal"));
-    modal.show();
-   
-}
-
-
-
-/*
-eventModal.addEventListener('shown.bs.modal', function () {
-    loadEvents(); // sua função que carrega os eventos
-});
-
-eventModal.addEventListener('hidden.bs.modal', function () {
-    location.reload() // sua função que carrega os eventos
-}); */
-
-
-
-
-// Carrega eventos
-async function loadEvents() {
-  genericSelect.innerHTML = "";
-  try {
-    const res = await fetch("./api/generic/list.php?table=myevent");
-    const data = await res.json();
-    data.forEach(ev => {
-      const opt = document.createElement("option");
-      opt.value = ev.id_myevent;
-      opt.textContent = `${ev.myevent} - R$ ${parseFloat(ev.price).toFixed(2)}`;
-      genericSelect.appendChild(opt);
-    });
-  } catch (err) {
-    alert("Erro no carregamento das informações!")
+// Função genérica para carregar registros no <select> atual
+async function loadGenericSelect() {
+  if (!currentConfig) {
+    console.warn("Nenhuma configuração carregada para o modal.");
+    return;
   }
-}
 
-// Carrega tipo de eventos
-async function loadTpEvents() {
-  genericSelect.innerHTML = "";
+  const { table, idField, selectId, fieldsToLoad } = currentConfig;
+  const selectEl = document.getElementById(selectId);
+  selectEl.innerHTML = "";
+
   try {
-    const res = await fetch("./api/generic/list.php?table=typeevent");
+    const res = await fetch(`./api/generic/list.php?table=${table}`);
     const data = await res.json();
-    data.forEach(ev => {
+
+    data.forEach(row => {
       const opt = document.createElement("option");
-      opt.value = ev.id_tpevent;
-      opt.textContent = `${ev.tpevent}`;
-      genericSelect.appendChild(opt);
+      opt.value = row[idField];
+
+      // Monta o texto a partir dos campos configurados
+      let textParts = fieldsToLoad.map(field => {
+        if (field === "price") {
+          return "R$ " + parseFloat(row[field]).toFixed(2);
+        }
+        return row[field];
+      });
+
+      opt.textContent = textParts.join(" - ");
+      selectEl.appendChild(opt);
+      
     });
+
   } catch (err) {
-    alert("Erro no carregamento das informações!")
+    alert("Erro no carregamento das informações!");
+    console.error(err);
   }
+  
 }
 
-// Carrega unidades
-async function loadUnits() {
-  genericSelect.innerHTML = "";
-  try {
-    const res = await fetch("./api/generic/list.php?table=units");
-    const data = await res.json();
-    data.forEach(ev => {
-      const opt = document.createElement("option");
-      opt.value = ev.id_units;
-      opt.textContent = `${ev.units}`;
-      genericSelect.appendChild(opt);
+// Função para abrir modal genérico com configuração dinâmica
+    function openGenericModal(config) {
+      const modalTitle = document.getElementById("genericModalTitle");
+      const genericInput1 = document.getElementById("genericInput1");
+      const genericInput2 = document.getElementById("genericInput2");
+      
+
+      // Atualiza os elementos do modal
+      modalTitle.textContent = config.title;
+      genericInput1.placeholder = config.inputPlaceholder1;
+      genericInput1.name = config.fieldsToLoad[0]
+      genericInput2.style.display = config.showPrice ? "block" : "none";
+
+      if(config.fieldsToLoad[1]){
+        genericInput2.placeholder = config.inputPlaceholder2;
+        genericInput2.name = config.fieldsToLoad[1]
+      }
+      
+
+
+      
+
+      // Salva a configuração global para uso em insert/delete/load
+      currentConfig = {
+        table: config.table,
+        idField: config.idField,
+        selectId: config.selectId,
+        fieldsToLoad: config.fieldsToLoad
+      };
+
+      // Carrega os dados no select automaticamente
+      loadGenericSelect();
+      console.log(currentConfig)
+      // Abre o modal
+      const modal = new bootstrap.Modal(document.getElementById("genericModal"));
+      modal.show();
+    }
+
+    document.getElementById("genericModal").addEventListener("hidden.bs.modal", function () {
+        // Limpa os formulários
+        const formAdd = document.getElementById("genericFormAdd");
+        if (formAdd) formAdd.reset();
+
+        const formDelete = document.getElementById("genericFormDelete");
+        if (formDelete) formDelete.reset();
+
+        // Limpa o select
+        const selectEl = document.getElementById("genericSelect");
+        if (selectEl) selectEl.innerHTML = "";
+
+        // Zera a configuração
+        currentConfig = null;
+
+        // Atualiza a página pai
+        location.reload(); 
     });
-  } catch (err) {
-    alert("Erro no carregamento das informações!")
-  }
-}
-
-
 
 // Form inserir
-document.getElementById("genericFormAdd").addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    const formData = Object.fromEntries(new FormData(this));
-    const res = await fetch("./api/insert.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-        body: JSON.stringify({ table: "myevent", values: formData })
-    });
-    const data = await res.json();
-    if (data.success) { alert(data.message); loadEvents(); }
-    else { alert("Erro: " + data.error); }
-});
+    document.getElementById("genericFormAdd").addEventListener("submit", async function(e) {
+      e.preventDefault();
 
+      if (!currentConfig) return alert("Nenhuma configuração carregada!");
+
+      const token = localStorage.getItem("token");
+      const formAdd = this; // referência ao form
+      const formData = Object.fromEntries(new FormData(formAdd));
+
+      try {
+        const res = await fetch("./api/insert.php", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json", 
+            "Authorization": `Bearer ${token}` 
+          },
+          body: JSON.stringify({ 
+            table: currentConfig.table, 
+            values: formData 
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          alert(data.message);
+
+          // Atualiza a lista no select
+          loadGenericSelect(
+            currentConfig.table, 
+            currentConfig.idField, 
+            currentConfig.fieldsToLoad
+          );
+
+          // Reseta o form
+          formAdd.reset();
+
+          /* Fecha o modal (opcional, se quiser fechar após inserir)
+          const modalEl = document.getElementById("genericModal");
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          modal.hide(); */
+
+        } else {
+          alert(data.error || "Erro ao inserir registro.");
+        }
+      } catch (err) {
+        alert("Erro de comunicação com o servidor: " + err.message);
+      }
+    });
 
 // Form deletar
-document.getElementById("genericFormDelete").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  if (confirm("Tem certeza que deseja excluir este evento?")) {
-      const id = document.getElementById("genericSelect").value;
-          const res = await fetch("./api/generic/delete.php", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ table: "myevent", id_field: "id_myevent", id_value: id })
-          });
-          const data = await res.json();
-          if (data.success) { alert(data.message); loadEvents(); }
-          else { alert("Erro: " + data.error); }
-  }         
-});
+    document.getElementById("genericFormDelete").addEventListener("submit", async function(e) {
+      e.preventDefault();
 
-loadTpEvents();
+      if (!currentConfig) return alert("Nenhuma configuração carregada!");
+
+      if (confirm("Tem certeza que deseja excluir este registro?")) {
+        const id = document.getElementById(currentConfig.selectId).value;
+
+        try {
+          const res = await fetch("./api/generic/delete.php", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              table: currentConfig.table,
+              id_field: currentConfig.idField,
+              id_value: id
+            })
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            // Atualiza o select com os dados da tabela atual
+            loadGenericSelect(currentConfig.table, currentConfig.idField, currentConfig.fieldsToLoad);
+
+            /*
+            const modalEl = document.getElementById("genericModal");
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide(); */
+
+          } else {
+            alert(data.error || "Erro ao excluir o registro.");
+          }
+        } catch (err) {
+          alert("Erro de comunicação com o servidor: " + err.message);
+        }
+      }
+    });
+
+      
