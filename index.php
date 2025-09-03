@@ -81,7 +81,8 @@
     <div class="me-2" style="width:50px;">
       <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
           title: 'Eventos',
-          inputPlaceholder: 'Nome do Evento',
+          inputPlaceholder1: 'Nome do Evento',
+          inputPlaceholder2: 'Preço',
           showPrice: true,
           table: 'myevent',
           idField: 'id_myevent',
@@ -99,7 +100,7 @@
     <div class="me-2" style="width:50px;">
       <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
           title: 'Tipo de Evento',
-          inputPlaceholder: 'Tipo do Evento',
+          inputPlaceholder1: 'Tipo do Evento',
           showPrice: false,
           table: 'typeevent',
           idField: 'id_tpevent',
@@ -117,7 +118,7 @@
     <div class="me-2" style="width:50px;">
       <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
           title: 'Unidades',
-          inputPlaceholder: 'Nome da Unidade',
+          inputPlaceholder1: 'Nome da Unidade',
           showPrice: false,
           table: 'units',
           idField: 'id_units',
@@ -163,8 +164,8 @@
           </div>
           <div class="modal-body">
               <form id="genericFormAdd">
-                  <input type="text" id="genericInput" name="myevent" placeholder="" required>
-                  <input type="number" step="0.01" id="genericPrice" name="price" placeholder="Preço" style="display:none;">
+                  <input type="text" id="genericInput1" name="" placeholder="" required>
+                  <input type="number" step="0.01" id="genericInput2" name="" placeholder="" style="display:none;">
                   <button type="submit">Adicionar</button>
               </form>
               <form id="genericFormDelete">

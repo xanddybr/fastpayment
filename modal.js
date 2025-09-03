@@ -46,13 +46,24 @@ async function loadGenericSelect() {
 // Função para abrir modal genérico com configuração dinâmica
     function openGenericModal(config) {
       const modalTitle = document.getElementById("genericModalTitle");
-      const input = document.getElementById("genericInput");
-      const priceField = document.getElementById("genericPrice");
+      const genericInput1 = document.getElementById("genericInput1");
+      const genericInput2 = document.getElementById("genericInput2");
+      
 
       // Atualiza os elementos do modal
       modalTitle.textContent = config.title;
-      input.placeholder = config.inputPlaceholder;
-      priceField.style.display = config.showPrice ? "block" : "none";
+      genericInput1.placeholder = config.inputPlaceholder1;
+      genericInput1.name = config.fieldsToLoad[0]
+      genericInput2.style.display = config.showPrice ? "block" : "none";
+
+      if(config.fieldsToLoad[1]){
+        genericInput2.placeholder = config.inputPlaceholder2;
+        genericInput2.name = config.fieldsToLoad[1]
+      }
+      
+
+
+      
 
       // Salva a configuração global para uso em insert/delete/load
       currentConfig = {
