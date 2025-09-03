@@ -33,7 +33,7 @@
     </div>
 
     <div class="mt-4 text-center">
-      <button class="btn btn-success" id="submitButton">Prosseguir com Evento Selecionado</button>
+      <button class="btn btn-success" id="submitButton">Comprar item selecionado!</button>
     </div>
 
     <div id="message" class="mt-4 text-center text-danger fw-bold"></div>
