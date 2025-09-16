@@ -311,8 +311,6 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         // Limpa o select
         const selectEl = document.getElementById("genericSelect");
         if (selectEl) selectEl.innerHTML = "";
-
-        //recarrega os 3 selectbox
         carregarEventos()
         carregarTipos()
         carregarUnidades()
