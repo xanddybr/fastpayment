@@ -139,15 +139,12 @@
   </form>
 </div>
 
-
 <h5>Datas disponibilizadas em sua agenda:</h5>
 <div style="width: 100%; overflow-x:auto;">
   <table class="table table-striped table-bordered">
     <thead>
       <tr>
-        <th>Dia</th><th>Data</th><th>Hora</th><th>Evento</th>
-        <th>Tipo</th><th>Modo/Unidade</th><th>Preço</th>
-        <th>Vaga(s)</th><th>Excluir</th>
+        <th>Dia</th><th>Data</th><th>Hora</th><th>Evento</th><th>Tipo</th><th>Preço</th><th>Modo/Unidade</th><th>Vaga(s)</th><th>Excluir</th>
       </tr>
     </thead>
     <tbody id="tabelaAgendamentos"></tbody>
@@ -165,13 +162,14 @@
           <div class="modal-body">
               <form id="genericFormAdd">
                   <input type="text" id="genericInput1" name="" placeholder="" required>
-                  <input type="number" step="0.01" id="genericInput2" name="" placeholder="" style="display:none;">
+                  <input type="text" step="0.01" id="genericInput2" name="" placeholder="" style="display:none;">
                   <button type="submit">Adicionar</button>
               </form>
               <form id="genericFormDelete">
                   <select id="genericSelect" name="genericSelect" size="5" required></select>
                   <button type="submit">Deletar</button>
               </form>
+              <div id='config'></div>
           </div>
       </div>
     </div>

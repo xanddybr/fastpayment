@@ -6,7 +6,6 @@
   <title>Mistura de Luz</title>
  <link rel="stylesheet" href="css/bootstrap.min.css">
  <script src="js/bootstrap.bundle.min.js"></script>
- <script src="logon.js"></script>
 </head>
 <body class="bg-light">
 
@@ -24,6 +23,7 @@
             <th>Evento</th>
             <th>Tipo</th>
             <th>Preço</th>
+            <th>Modo/Unidade</th>
             <th>Vagas</th>
           </tr>
         </thead>
@@ -41,7 +41,7 @@
   </div>
 
   <script>
-    fetch('./api/schedule/list_schedule_custom.php')
+    fetch('./api/schedule.php')
       .then(response => response.json())
       .then(data => {
         const tbody = document.getElementById("scheduleTableBody");
@@ -52,20 +52,21 @@
           return;
         }
 
-        data.forEach((row, index) => {
+        data.forEach((a, index) => {
           const tr = document.createElement("tr");
           tr.classList.add('text-center');
           tr.innerHTML = `
             <td>
-              <input type="radio" name="selectedEvent" value="${row.IdSch}" class="form-check-input">
+              <input type="radio" name="selectedEvent" value="${a.IdSch}" class="form-check-input">
             </td>
-            <td>${getDayName(row.Date)}</td>
-            <td>${row.Date}</td>
-            <td>${row.Hora}</td>
-            <td>${row.Evento}</td>
-            <td>${row.Tipo}</td>
-            <td>R$ ${parseFloat(row.Preco).toFixed(2)}</td>
-            <td>${row.Vagas}</td>`;
+            <td>${getDayName(a.date)}</td>
+             <td>${a.date}</td>
+             <td>${a.time}</td>
+            <td>${a.myevent}</td>
+            <td>${a.tpevent}</td>
+            <td>R$${a.price}</td>
+            <td>${a.units}</td>
+            <td>${a.vacancies}</td>`;
           tbody.appendChild(tr);
         });
       })

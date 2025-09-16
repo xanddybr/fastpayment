@@ -1,5 +1,5 @@
 const API_URL = "api";
-// Verifica login
+// check login
 function checkLogin() {
     const token = localStorage.getItem("token");
     if (token) {
@@ -15,8 +15,7 @@ function checkLogin() {
     }
 }
 
-checkLogin();
-
+//make Login
 function mostrarLogin() {
     document.getElementById("login").style.display = "block";
     document.getElementById("dashboard").style.display = "none";
@@ -43,8 +42,13 @@ async function makeLogin() {
     const data = await res.json();
     if (data.token) {
         localStorage.setItem("token", data.token);
-        carregarEventos(); carregarTipos(); carregarAgendamentos(); carregarUnidades();
-        carregaHora(); carregaMinuto(); mostrarDashboard();
+        carregarEventos(); 
+        carregarTipos();
+        carregarAgendamentos(); 
+        carregarUnidades();
+        carregaHora(); 
+        carregaMinuto(); 
+        mostrarDashboard();
     } else {
         alert(data.error);
     }
@@ -60,7 +64,7 @@ async function carregarEventos() {
     select.innerHTML = `<option value='' selected>Selecione um evento</option>` +
         eventos.map(e => `<option value="${e.id_myevent}">${e.myevent}</option>`).join('');
 }
-
+// load typeevent
 async function carregarTipos() {
     const res = await fetch(`${API_URL}/typeevent.php`);
     const tipos = await res.json();
@@ -68,7 +72,7 @@ async function carregarTipos() {
     select.innerHTML = `<option value='' selected>Tipo</option>` +
         tipos.map(t => `<option value="${t.id_tpevent}">${t.tpevent}</option>`).join('');
 }
-
+// load units
 async function carregarUnidades() {
     const res = await fetch(`${API_URL}/unidade.php`);
     const unidades = await res.json();
@@ -77,7 +81,7 @@ async function carregarUnidades() {
         unidades.map(u => `<option value="${u.id_units}">${u.units}</option>`).join('');
 }
 
-// Horário
+// Load format time
 function carregaHora() {
     const select = document.getElementById("hora");
     select.innerHTML = `<option value='' selected>H</option>`;
@@ -88,6 +92,7 @@ function carregaHora() {
     }
 }
 
+// Load minutes in selectbox
 function carregaMinuto() {
     const select = document.getElementById("minuto");
     select.innerHTML = `<option value='' selected>M</option>`;
@@ -105,14 +110,31 @@ function getDayName(dateString) {
     return ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'][date.getDay()];
 }
 
+// Formate date
 function formatDate(isoDate) {
     let [ano, mes, dia] = isoDate.split("-");
     return `${dia}/${mes}/${ano}`;
 }
 
+//GetTime
 function getDateTime() {
-    const now = new Date();
-    return now.toISOString().slice(0,19).replace("T"," ");
+    const agora = new Date();
+
+  const options = {
+    timeZone: 'America/Sao_Paulo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false 
+  };
+
+  const partes = new Intl.DateTimeFormat('pt-BR', options).formatToParts(agora);
+  const mapa = Object.fromEntries(partes.map(p => [p.type, p.value]));
+
+  return `${mapa.year}-${mapa.month}-${mapa.day} ${mapa.hour}:${mapa.minute}:${mapa.second}`;
 }
 
 // Carregar agendamentos
@@ -128,8 +150,8 @@ async function carregarAgendamentos() {
             <td>${a.time}</td>
             <td>${a.myevent}</td>
             <td>${a.tpevent}</td>
-            <td>${a.units}</td>
             <td>R$${a.price}</td>
+            <td>${a.units}</td>
             <td>${a.vacancies}</td>
             <td><button class="btn btn-danger btn-sm" onclick="deletarAgendamento(${a.id_schedule})">Excluir</button></td>
         </tr>
@@ -146,8 +168,7 @@ function deletarAgendamento(id) {
         })
         .then(res => res.json())
         .then(result => {
-            if (result.success) { alert("Agendamento excluído!"); carregarAgendamentos(); }
-            else { alert("Erro ao excluir: " + result.error); }
+            carregarAgendamentos();
         });
     }
 }
@@ -159,12 +180,12 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
     const data = {
         table: "schedule",
         values: {
-            date: formatDate(document.getElementById("data").value),
-            time: document.getElementById("hora").value + ":" + document.getElementById("minuto").value + ":00",
-            id_myevent: parseInt(document.getElementById("evento").value),
-            id_tpEvent: parseInt(document.getElementById("tipo").value),
-            id_units: parseInt(document.getElementById("unidade").value),
-            vacancies: parseInt(document.getElementById("vagas").value),
+            date: formatDate(document.getElementById("data").value.trim()),
+            time: document.getElementById("hora").value + ":" + document.getElementById("minuto").value,
+            id_myevent: parseInt(document.getElementById("evento").value.trim()),
+            id_tpEvent: parseInt(document.getElementById("tipo").value.trim()),
+            id_units: parseInt(document.getElementById("unidade").value.trim()),
+            vacancies: parseInt(document.getElementById("vagas").value.trim()),
             created_at: getDateTime()
         }
     };
@@ -186,4 +207,198 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         console.error("Erro ao inserir dados:", error);
         alert("Ocorreu um erro ao enviar os dados.");
     }
-});
+})
+
+    const formDelete = document.getElementById("genericFormDelete");
+    const formAdd = document.getElementById("genericFormAdd");
+
+    // Função genérica para carregar registros no <select> atual
+    async function loadGenericSelect() {
+      if (!currentConfig) {
+        console.warn("Nenhuma configuração carregada para o modal.");
+        return;
+      }
+
+      const { table, idField, selectId, fieldsToLoad } = currentConfig;
+      const selectEl = document.getElementById(selectId);
+      selectEl.innerHTML = "";
+
+      try {
+        const res = await fetch(`./api/generic/list.php?table=${table}`);
+        const data = await res.json();
+
+        data.forEach(row => {
+          const opt = document.createElement("option");
+          opt.value = row[idField];
+
+          // Monta o texto a partir dos campos configurados
+          let textParts = fieldsToLoad.map(field => {
+            if (field === "price") {
+              return "R$ " + parseFloat(row[field]).toFixed(2);
+            }
+            return row[field];
+          });
+
+          opt.textContent = textParts.join(" - ");
+          selectEl.appendChild(opt);
+          
+        });
+
+      } catch (err) {
+        alert("Erro no carregamento das informações!");
+        console.error(err);
+      }
+      
+    }
+
+
+    // Variável global para guardar os parâmetros atuais do modal
+    let currentConfig = null
+    let config = null
+
+   // Função para abrir modal genérico com configuração dinâmica
+    function openGenericModal(config) {
+
+      const modalTitle = document.getElementById("genericModalTitle");
+      const genericInput1 = document.getElementById("genericInput1");
+      const genericInput2 = document.getElementById("genericInput2");
+      
+
+      // Atualiza os elementos do modal
+      modalTitle.textContent = config.title;
+      genericInput1.placeholder = config.inputPlaceholder1;
+      genericInput1.name = config.fieldsToLoad[0]
+      genericInput2.style.display = config.showPrice ? "block" : "none";
+
+      if(config.fieldsToLoad[1]){
+        genericInput2.placeholder = config.inputPlaceholder2;
+        genericInput2.name = config.fieldsToLoad[1]
+        genericInput2.style.display = config.showPrice ? "block" : "none";
+      }
+      
+        // Salva a configuração global para uso em insert/delete/load
+          currentConfig = {
+            table: config.table,
+            idField: config.idField,
+            selectId: config.selectId,
+            fieldsToLoad: config.fieldsToLoad
+          };
+
+          // Carrega os dados no select automaticamente
+          loadGenericSelect();
+          // Abre o modal
+          const modal = new bootstrap.Modal(document.getElementById("genericModal"));
+          modal.show();
+
+        }
+      
+
+    document.getElementById("genericModal").addEventListener("hidden.bs.modal", function () {
+
+        // Limpa os formulários
+        if (formAdd){ formAdd.reset() } ;
+        if (formDelete) {formDelete.reset() } ;
+        // Limpa o select
+        const selectEl = document.getElementById("genericSelect");
+        if (selectEl) { selectEl.innerHTML = ""; } 
+      
+    });
+
+// Form inserir
+    document.getElementById("genericFormAdd").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const genericInput1 = document.getElementById("genericInput1")
+
+      if (!currentConfig) return alert("Nenhuma configuração carregada!");
+
+      const token = localStorage.getItem("token")
+      const formAdd = this; // referência ao form
+      const formData = Object.fromEntries(new FormData(formAdd))
+      formData.created_at = getDateTime()
+
+      try {
+        const res = await fetch("./api/insert.php", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json", 
+            "Authorization": `Bearer ${token}` 
+          },
+          body: JSON.stringify({ 
+            table: currentConfig.table, 
+            values: formData 
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          alert(data.message);
+          
+          // Atualiza a lista no select
+          loadGenericSelect(
+            currentConfig.table, 
+            currentConfig.idField, 
+            currentConfig.fieldsToLoad
+          );
+
+          // Reseta o form
+          formAdd.reset();
+          genericInput1.focus()
+
+          /* Fecha o modal (opcional, se quiser fechar após inserir)
+          const modalEl = document.getElementById("genericModal");
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          modal.hide(); */
+
+        } else {
+          alert(data.error || "Erro ao inserir registro.");
+        }
+      } catch (err) {
+        alert("Erro de comunicação com o servidor: " + err.message);
+      }
+      
+    });
+
+// Form deletar
+    document.getElementById("genericFormDelete").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      if (!currentConfig) return alert("Nenhuma configuração carregada!");
+
+      if (confirm("Tem certeza que deseja excluir este registro?")) {
+        const id = document.getElementById(currentConfig.selectId).value;
+
+        try {
+          const res = await fetch("./api/generic/delete.php", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              table: currentConfig.table,
+              id_field: currentConfig.idField,
+              id_value: id
+            })
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            // Atualiza o select com os dados da tabela atual
+            loadGenericSelect(currentConfig.table, currentConfig.idField, currentConfig.fieldsToLoad);
+
+            /*
+            const modalEl = document.getElementById("genericModal");
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide(); */
+
+          } else {
+            alert(data.error || "Erro ao excluir o registro.");
+          }
+        } catch (err) {
+          alert("Erro de comunicação com o servidor: " + err.message);
+        }
+      }
+    });
+
+    console.log(currentConfig)
+    checkLogin();
+ 
