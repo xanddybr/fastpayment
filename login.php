@@ -162,7 +162,7 @@
           <div class="modal-body">
               <form id="genericFormAdd">
                   <input type="text" id="genericInput1" name="" placeholder="" required>
-                  <input type="text" step="0.01" id="genericInput2" name="" placeholder="" style="display:none;">
+                  <input type="number" step="0.01" id="genericInput2" name="" placeholder="" style="display:none;">
                   <button type="submit">Adicionar</button>
               </form>
               <form id="genericFormDelete">

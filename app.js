@@ -265,7 +265,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
       genericInput1.name = config.fieldsToLoad?.[0] || "";
       genericInput2.style.display = "none";
 
-      if (config.showPrice && config.fieldsToLoad?.[1]) {
+      if (config.showPrice) {
         genericInput2.style.display = "block";
         genericInput2.placeholder = config.inputPlaceholder2 || "";
         genericInput2.name = config.fieldsToLoad[1];
@@ -297,8 +297,6 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         if (formDelete) formDelete.reset();
 
         // Limpa os inputs
-      
-        const genericInput2 = document.getElementById("genericInput2");
 
         [genericInput2].forEach(input => {
           if (input) {
@@ -313,6 +311,11 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         // Limpa o select
         const selectEl = document.getElementById("genericSelect");
         if (selectEl) selectEl.innerHTML = "";
+
+        //recarrega os 3 selectbox
+        carregarEventos()
+        carregarTipos()
+        carregarUnidades()
 
         // Zera a configuração
         currentConfig = null;
