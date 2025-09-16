@@ -248,60 +248,73 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         alert("Erro no carregamento das informações!");
         console.error(err);
       }
-      
     }
-
 
     // Variável global para guardar os parâmetros atuais do modal
     let currentConfig = null
-    let config = null
 
    // Função para abrir modal genérico com configuração dinâmica
-    function openGenericModal(config) {
-
+  function openGenericModal(config) {
       const modalTitle = document.getElementById("genericModalTitle");
       const genericInput1 = document.getElementById("genericInput1");
       const genericInput2 = document.getElementById("genericInput2");
-      
 
-      // Atualiza os elementos do modal
-      modalTitle.textContent = config.title;
-      genericInput1.placeholder = config.inputPlaceholder1;
-      genericInput1.name = config.fieldsToLoad[0]
-      genericInput2.style.display = config.showPrice ? "block" : "none";
+      // 🔹 Aplica a config nova
+      modalTitle.textContent = config.title || "";
+      genericInput1.placeholder = config.inputPlaceholder1 || "";
+      genericInput1.name = config.fieldsToLoad?.[0] || "";
+      genericInput2.style.display = "none";
 
-      if(config.fieldsToLoad[1]){
-        genericInput2.placeholder = config.inputPlaceholder2;
-        genericInput2.name = config.fieldsToLoad[1]
-        genericInput2.style.display = config.showPrice ? "block" : "none";
+      if (config.showPrice && config.fieldsToLoad?.[1]) {
+        genericInput2.style.display = "block";
+        genericInput2.placeholder = config.inputPlaceholder2 || "";
+        genericInput2.name = config.fieldsToLoad[1];
       }
-      
-        // Salva a configuração global para uso em insert/delete/load
-          currentConfig = {
-            table: config.table,
-            idField: config.idField,
-            selectId: config.selectId,
-            fieldsToLoad: config.fieldsToLoad
-          };
 
-          // Carrega os dados no select automaticamente
-          loadGenericSelect();
-          // Abre o modal
-          const modal = new bootstrap.Modal(document.getElementById("genericModal"));
-          modal.show();
+      // 🔹 Atualiza config global
+      currentConfig = {
+        table: config.table || null,
+        idField: config.idField || null,
+        selectId: config.selectId || null,
+        fieldsToLoad: config.fieldsToLoad || []
+      };
 
-        }
+      loadGenericSelect();
+
+      const modal = new bootstrap.Modal(document.getElementById("genericModal"));
+      modal.show();
+    }
+
       
 
     document.getElementById("genericModal").addEventListener("hidden.bs.modal", function () {
+ // Limpa os formulários
+        const formAdd = document.getElementById("genericFormAdd");
+        if (formAdd) formAdd.reset();
 
-        // Limpa os formulários
-        if (formAdd){ formAdd.reset() } ;
-        if (formDelete) {formDelete.reset() } ;
+        const formDelete = document.getElementById("genericFormDelete");
+        if (formDelete) formDelete.reset();
+
+        // Limpa os inputs
+        const genericInput1 = document.getElementById("genericInput1");
+        const genericInput2 = document.getElementById("genericInput2");
+
+        [genericInput2].forEach(input => {
+          if (input) {
+            input.value = "";
+            input.placeholder = "";
+            input.name = "";
+            input.style.display = "none";
+          }
+        });
+
         // Limpa o select
         const selectEl = document.getElementById("genericSelect");
-        if (selectEl) { selectEl.innerHTML = ""; } 
-      
+        if (selectEl) selectEl.innerHTML = "";
+
+        // Zera a configuração
+        currentConfig = null;
+        
     });
 
 // Form inserir
