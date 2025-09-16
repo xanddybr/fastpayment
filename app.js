@@ -269,6 +269,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         genericInput2.style.display = "block";
         genericInput2.placeholder = config.inputPlaceholder2 || "";
         genericInput2.name = config.fieldsToLoad[1];
+        genericInput2.setAttribute('required','')
       }
 
       // 🔹 Atualiza config global
@@ -296,7 +297,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         if (formDelete) formDelete.reset();
 
         // Limpa os inputs
-        const genericInput1 = document.getElementById("genericInput1");
+      
         const genericInput2 = document.getElementById("genericInput2");
 
         [genericInput2].forEach(input => {
@@ -305,6 +306,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
             input.placeholder = "";
             input.name = "";
             input.style.display = "none";
+            input.removeAttribute('required')
           }
         });
 
