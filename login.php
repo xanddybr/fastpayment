@@ -91,8 +91,7 @@
     <div class="me-2" style="width:50px;">
       <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
           title: 'Eventos',
-          inputPlaceholder1: 'Nome do Evento',
-          inputPlaceholder2: 'Preço',
+          inputPlaceholder: ['Nome do Evento', 'Preço'],
           showPrice: true,
           table: 'myevent',
           idField: 'id_myevent',
@@ -109,8 +108,8 @@
     <!-- Botão entre tipo e unidade -->
     <div class="me-2" style="width:50px;">
       <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
-          title: 'Tipo de Evento',
-          inputPlaceholder1: 'Tipo do Evento',
+          title: 'Tipo',
+          inputPlaceholder: ['Tipo do evento'],
           showPrice: false,
           table: 'typeevent',
           idField: 'id_tpevent',
@@ -128,7 +127,7 @@
     <div class="me-2" style="width:50px;">
       <button type="button" class="btn btn-sm btn-primary" onclick="openGenericModal({
           title: 'Unidades',
-          inputPlaceholder1: 'Nome da Unidade',
+          inputPlaceholder: ['Nome da unidade'],
           showPrice: false,
           table: 'units',
           idField: 'id_units',

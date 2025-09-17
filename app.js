@@ -167,9 +167,8 @@ function deletarAgendamento(id) {
             body: JSON.stringify({ table: "schedule", id_field: "id_schedule", id_value: id })
         })
         .then(res => res.json())
-        .then(result => {
-            carregarAgendamentos();
-        });
+        .catch(error => { alert("Erro ao tentar excluir essa informação", res.error + error)})
+        carregarAgendamentos();   
     }
 }
 
@@ -255,23 +254,31 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
 
    // Função para abrir modal genérico com configuração dinâmica
   function openGenericModal(config) {
-      const modalTitle = document.getElementById("genericModalTitle");
+      const genericModalTitle = document.getElementById("genericModalTitle");
       const genericInput1 = document.getElementById("genericInput1");
       const genericInput2 = document.getElementById("genericInput2");
 
-      // 🔹 Aplica a config nova
-      modalTitle.textContent = config.title || "";
-      genericInput1.placeholder = config.inputPlaceholder1 || "";
-      genericInput1.name = config.fieldsToLoad?.[0] || "";
-      genericInput2.style.display = "none";
 
-      if (config.showPrice) {
-        genericInput2.style.display = "block";
-        genericInput2.placeholder = config.inputPlaceholder2 || "";
+        //Aplica o titulo ao modal de acordo com a função
+        genericModalTitle.textContent = config.title;
+      // 🔹 Aplica a config carregada atravez do objeto
+
+      if(config.showPrice){
+        genericInput1.placeholder = config.inputPlaceholder[0];
+        genericInput1.name = config.fieldsToLoad[0];
+        genericInput2.placeholder = config.inputPlaceholder[1];
         genericInput2.name = config.fieldsToLoad[1];
+        genericInput2.style.display = "block";
         genericInput2.setAttribute('required','')
+      } else {
+        genericInput1.placeholder = config.inputPlaceholder[0];
+        genericInput1.name = config.fieldsToLoad[0];
+        genericInput2.style.display = "none";
+        genericInput2.removeAttribute('placeholder')
+        genericInput2.removeAttribute('name')
+        genericInput2.removeAttribute('required')
       }
-
+      
       // 🔹 Atualiza config global
       currentConfig = {
         table: config.table || null,
@@ -296,17 +303,13 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         const formDelete = document.getElementById("genericFormDelete");
         if (formDelete) formDelete.reset();
 
-        // Limpa os inputs
+        // Esconde o genericinput2 e remove atributo requerido
 
-        [genericInput2].forEach(input => {
-          if (input) {
-            input.value = "";
-            input.placeholder = "";
-            input.name = "";
-            input.style.display = "none";
-            input.removeAttribute('required')
-          }
-        });
+             /*  
+            genericInput2.name
+            genericInput2.style.display = "none";
+            genericInput2.removeAttribute('required') */
+         
 
         // Limpa o select
         const selectEl = document.getElementById("genericSelect");
@@ -314,7 +317,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         carregarEventos()
         carregarTipos()
         carregarUnidades()
-
+        config = null;
         // Zera a configuração
         currentConfig = null;
         

@@ -57,7 +57,7 @@
           tr.classList.add('text-center');
           tr.innerHTML = `
             <td>
-              <input type="radio" name="selectedEvent" value="${a.IdSch}" class="form-check-input">
+              <input type="radio" name="selectedEvent" value="${a.id_schedule}" class="form-check-input">
             </td>
             <td>${getDayName(a.date)}</td>
              <td>${a.date}</td>
