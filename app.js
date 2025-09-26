@@ -1,4 +1,3 @@
-const API_URL = "api";
 // check login
 function checkLogin() {
     const token = localStorage.getItem("token");
@@ -33,7 +32,7 @@ async function makeLogin() {
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
 
-    const res = await fetch(`${API_URL}/login.php`, {
+    const res = await fetch(`api/login.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password: senha })
@@ -58,7 +57,7 @@ function logout() { localStorage.removeItem("token"); mostrarLogin(); }
 
 // Carregar selects
 async function carregarEventos() {
-    const res = await fetch(`${API_URL}/myevent.php`);
+    const res = await fetch(`api/generic/list.php?table=myevent`);
     const eventos = await res.json();
     let select = document.getElementById("evento");
     select.innerHTML = `<option value='' selected>Selecione um evento</option>` +
@@ -66,7 +65,7 @@ async function carregarEventos() {
 }
 // load typeevent
 async function carregarTipos() {
-    const res = await fetch(`${API_URL}/typeevent.php`);
+    const res = await fetch(`api/typeevent.php?table=tpevent`);
     const tipos = await res.json();
     let select = document.getElementById("tipo");
     select.innerHTML = `<option value='' selected>Tipo</option>` +
@@ -74,7 +73,7 @@ async function carregarTipos() {
 }
 // load units
 async function carregarUnidades() {
-    const res = await fetch(`${API_URL}/unidade.php`);
+    const res = await fetch(`api/unidade.php?table=units`);
     const unidades = await res.json();
     let select = document.getElementById("unidade");
     select.innerHTML = `<option value='' selected>Unidade</option>` +
@@ -139,7 +138,7 @@ function getDateTime() {
 
 // Carregar agendamentos
 async function carregarAgendamentos() {
-    const res = await fetch(`${API_URL}/schedule.php`);
+    const res = await fetch(`api/schedule.php`);
     const agendamentos = await res.json();
     let tabela = document.getElementById("tabelaAgendamentos");
 
@@ -161,7 +160,7 @@ async function carregarAgendamentos() {
 // Deletar agendamento
 function deletarAgendamento(id) {
     if (confirm("Tem certeza que deseja excluir este agendamento?")) {
-        fetch(`${API_URL}/generic/delete.php`, {
+        fetch(`api/generic/delete.php`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ table: "schedule", id_field: "id_schedule", id_value: id })
@@ -190,7 +189,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
     };
 
     try {
-        const response = await fetch(`${API_URL}/insert.php`, {
+        const response = await fetch(`api/insert.php`, {
             method: "POST",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(data)
