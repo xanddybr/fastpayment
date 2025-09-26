@@ -57,7 +57,7 @@ function logout() { localStorage.removeItem("token"); mostrarLogin(); }
 
 // Carregar selects
 async function carregarEventos() {
-    const res = await fetch(`api/generic/list.php?table=myevent`);
+    const res = await fetch("./api/generic/list.php?table=myevent");
     const eventos = await res.json();
     let select = document.getElementById("evento");
     select.innerHTML = `<option value='' selected>Selecione um evento</option>` +
@@ -65,7 +65,7 @@ async function carregarEventos() {
 }
 // load typeevent
 async function carregarTipos() {
-    const res = await fetch(`api/typeevent.php?table=tpevent`);
+    const res = await fetch("./api/generic/list.php?table=typeevent");
     const tipos = await res.json();
     let select = document.getElementById("tipo");
     select.innerHTML = `<option value='' selected>Tipo</option>` +
@@ -73,7 +73,7 @@ async function carregarTipos() {
 }
 // load units
 async function carregarUnidades() {
-    const res = await fetch(`api/unidade.php?table=units`);
+    const res = await fetch("./api/generic/list.php?table=units");
     const unidades = await res.json();
     let select = document.getElementById("unidade");
     select.innerHTML = `<option value='' selected>Unidade</option>` +
@@ -189,7 +189,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
     };
 
     try {
-        const response = await fetch(`api/insert.php`, {
+        const response = await fetch(`./api/generic/insert.php`, {
             method: "POST",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(data)
@@ -222,7 +222,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
       selectEl.innerHTML = "";
 
       try {
-        const res = await fetch(`./api/generic/list.php?table=${table}`);
+        const res = await fetch(`./api/generic/list.php?table=myevent`);
         const data = await res.json();
 
         data.forEach(row => {
@@ -335,7 +335,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
       formData.created_at = getDateTime()
 
       try {
-        const res = await fetch("./api/insert.php", {
+        const res = await fetch("./api/generic/insert.php", {
           method: "POST",
           headers: { 
             "Content-Type": "application/json", 
