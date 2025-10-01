@@ -176,7 +176,7 @@
               </form>
               <form id="genericFormDelete">
                   <select id="genericSelect" name="genericSelect" size="5" required></select>
-                  <button type="submit">Deletar</button>
+                  <div><button type="submit" class="btn btn-danger btn-sm">Deletar</button></div>
               </form>
               <div id='config'></div>
           </div>

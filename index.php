@@ -34,7 +34,7 @@
     </div>
 
     <div class="mt-4 text-center">
-      <button class="btn btn-success" id="submitButton">Participar do evento!</button>
+      <button class="btn btn-success" id="submitButton">Participar do evento selecionado!</button>
     </div>
 
     <div id="registrationForm" class="mt-4" style="display:none;">
