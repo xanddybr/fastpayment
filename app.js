@@ -1,4 +1,3 @@
-const API_URL = "api";
 // check login
 function checkLogin() {
     const token = localStorage.getItem("token");
@@ -33,7 +32,7 @@ async function makeLogin() {
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
 
-    const res = await fetch(`${API_URL}/login.php`, {
+    const res = await fetch(`api/login.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password: senha })
@@ -58,7 +57,7 @@ function logout() { localStorage.removeItem("token"); mostrarLogin(); }
 
 // Carregar selects
 async function carregarEventos() {
-    const res = await fetch(`${API_URL}/myevent.php`);
+    const res = await fetch("api/generic/list.php?table=myevent");
     const eventos = await res.json();
     let select = document.getElementById("evento");
     select.innerHTML = `<option value='' selected>Selecione um evento</option>` +
@@ -66,19 +65,19 @@ async function carregarEventos() {
 }
 // load typeevent
 async function carregarTipos() {
-    const res = await fetch(`${API_URL}/typeevent.php`);
+    const res = await fetch("api/generic/list.php?table=typeevent");
     const tipos = await res.json();
     let select = document.getElementById("tipo");
     select.innerHTML = `<option value='' selected>Tipo</option>` +
-        tipos.map(t => `<option value="${t.id_tpevent}">${t.tpevent}</option>`).join('');
+        tipos.map(e => `<option value="${e.id_tpevent}">${e.tpevent}</option>`).join('');
 }
 // load units
 async function carregarUnidades() {
-    const res = await fetch(`${API_URL}/unidade.php`);
+    const res = await fetch("api/generic/list.php?table=units");
     const unidades = await res.json();
     let select = document.getElementById("unidade");
     select.innerHTML = `<option value='' selected>Unidade</option>` +
-        unidades.map(u => `<option value="${u.id_units}">${u.units}</option>`).join('');
+        unidades.map(e => `<option value="${e.id_units}">${e.units}</option>`).join('');
 }
 
 // Load format time
@@ -139,7 +138,7 @@ function getDateTime() {
 
 // Carregar agendamentos
 async function carregarAgendamentos() {
-    const res = await fetch(`${API_URL}/schedule.php`);
+    const res = await fetch(`api/schedule.php`);
     const agendamentos = await res.json();
     let tabela = document.getElementById("tabelaAgendamentos");
 
@@ -161,15 +160,14 @@ async function carregarAgendamentos() {
 // Deletar agendamento
 function deletarAgendamento(id) {
     if (confirm("Tem certeza que deseja excluir este agendamento?")) {
-        fetch(`${API_URL}/generic/delete.php`, {
+        fetch(`api/generic/delete.php`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ table: "schedule", id_field: "id_schedule", id_value: id })
         })
         .then(res => res.json())
-        .then(result => {
-            carregarAgendamentos();
-        });
+        .catch(error => { alert("Erro ao tentar excluir essa informação", res.error + error)})
+        carregarAgendamentos();   
     }
 }
 
@@ -191,7 +189,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
     };
 
     try {
-        const response = await fetch(`${API_URL}/insert.php`, {
+        const response = await fetch(`./api/generic/insert.php`, {
             method: "POST",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(data)
@@ -224,7 +222,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
       selectEl.innerHTML = "";
 
       try {
-        const res = await fetch(`./api/generic/list.php?table=${table}`);
+        const res = await fetch("./api/generic/list.php?table=" + currentConfig.table );
         const data = await res.json();
 
         data.forEach(row => {
@@ -255,23 +253,31 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
 
    // Função para abrir modal genérico com configuração dinâmica
   function openGenericModal(config) {
-      const modalTitle = document.getElementById("genericModalTitle");
+      const genericModalTitle = document.getElementById("genericModalTitle");
       const genericInput1 = document.getElementById("genericInput1");
       const genericInput2 = document.getElementById("genericInput2");
 
-      // 🔹 Aplica a config nova
-      modalTitle.textContent = config.title || "";
-      genericInput1.placeholder = config.inputPlaceholder1 || "";
-      genericInput1.name = config.fieldsToLoad?.[0] || "";
-      genericInput2.style.display = "none";
 
-      if (config.showPrice && config.fieldsToLoad?.[1]) {
-        genericInput2.style.display = "block";
-        genericInput2.placeholder = config.inputPlaceholder2 || "";
+        //Aplica o titulo ao modal de acordo com a função
+        genericModalTitle.textContent = config.title;
+      // 🔹 Aplica a config carregada atravez do objeto
+
+      if(config.showPrice){
+        genericInput1.placeholder = config.inputPlaceholder[0];
+        genericInput1.name = config.fieldsToLoad[0];
+        genericInput2.placeholder = config.inputPlaceholder[1];
         genericInput2.name = config.fieldsToLoad[1];
+        genericInput2.style.display = "block";
         genericInput2.setAttribute('required','')
+      } else {
+        genericInput1.placeholder = config.inputPlaceholder[0];
+        genericInput1.name = config.fieldsToLoad[0];
+        genericInput2.style.display = "none";
+        genericInput2.removeAttribute('placeholder')
+        genericInput2.removeAttribute('name')
+        genericInput2.removeAttribute('required')
       }
-
+      
       // 🔹 Atualiza config global
       currentConfig = {
         table: config.table || null,
@@ -296,24 +302,21 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
         const formDelete = document.getElementById("genericFormDelete");
         if (formDelete) formDelete.reset();
 
-        // Limpa os inputs
-      
-        const genericInput2 = document.getElementById("genericInput2");
+        // Esconde o genericinput2 e remove atributo requerido
 
-        [genericInput2].forEach(input => {
-          if (input) {
-            input.value = "";
-            input.placeholder = "";
-            input.name = "";
-            input.style.display = "none";
-            input.removeAttribute('required')
-          }
-        });
+             /*  
+            genericInput2.name
+            genericInput2.style.display = "none";
+            genericInput2.removeAttribute('required') */
+         
 
         // Limpa o select
         const selectEl = document.getElementById("genericSelect");
         if (selectEl) selectEl.innerHTML = "";
-
+        carregarEventos()
+        carregarTipos()
+        carregarUnidades()
+        config = null;
         // Zera a configuração
         currentConfig = null;
         
@@ -332,7 +335,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
       formData.created_at = getDateTime()
 
       try {
-        const res = await fetch("./api/insert.php", {
+        const res = await fetch("./api/generic/insert.php", {
           method: "POST",
           headers: { 
             "Content-Type": "application/json", 
@@ -359,11 +362,6 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
           // Reseta o form
           formAdd.reset();
           genericInput1.focus()
-
-          /* Fecha o modal (opcional, se quiser fechar após inserir)
-          const modalEl = document.getElementById("genericModal");
-          const modal = bootstrap.Modal.getInstance(modalEl);
-          modal.hide(); */
 
         } else {
           alert(data.error || "Erro ao inserir registro.");
@@ -397,13 +395,8 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
           const data = await res.json();
 
           if (data.success) {
-            // Atualiza o select com os dados da tabela atual
-            loadGenericSelect(currentConfig.table, currentConfig.idField, currentConfig.fieldsToLoad);
 
-            /*
-            const modalEl = document.getElementById("genericModal");
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            modal.hide(); */
+            loadGenericSelect(currentConfig.table, currentConfig.idField, currentConfig.fieldsToLoad);
 
           } else {
             alert(data.error || "Erro ao excluir o registro.");
