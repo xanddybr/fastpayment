@@ -57,7 +57,7 @@ function logout() { localStorage.removeItem("token"); mostrarLogin(); }
 
 // Carregar selects
 async function carregarEventos() {
-    const res = await fetch("./api/generic/list.php?table=myevent");
+    const res = await fetch("api/generic/list.php?table=myevent");
     const eventos = await res.json();
     let select = document.getElementById("evento");
     select.innerHTML = `<option value='' selected>Selecione um evento</option>` +
@@ -65,19 +65,19 @@ async function carregarEventos() {
 }
 // load typeevent
 async function carregarTipos() {
-    const res = await fetch("./api/generic/list.php?table=typeevent");
+    const res = await fetch("api/generic/list.php?table=typeevent");
     const tipos = await res.json();
     let select = document.getElementById("tipo");
     select.innerHTML = `<option value='' selected>Tipo</option>` +
-        tipos.map(t => `<option value="${t.id_tpevent}">${t.tpevent}</option>`).join('');
+        tipos.map(e => `<option value="${e.id_tpevent}">${e.tpevent}</option>`).join('');
 }
 // load units
 async function carregarUnidades() {
-    const res = await fetch("./api/generic/list.php?table=units");
+    const res = await fetch("api/generic/list.php?table=units");
     const unidades = await res.json();
     let select = document.getElementById("unidade");
     select.innerHTML = `<option value='' selected>Unidade</option>` +
-        unidades.map(u => `<option value="${u.id_units}">${u.units}</option>`).join('');
+        unidades.map(e => `<option value="${e.id_units}">${e.units}</option>`).join('');
 }
 
 // Load format time
@@ -222,7 +222,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
       selectEl.innerHTML = "";
 
       try {
-        const res = await fetch(`./api/generic/list.php?table=myevent`);
+        const res = await fetch("./api/generic/list.php?table=" + currentConfig.table );
         const data = await res.json();
 
         data.forEach(row => {
@@ -363,11 +363,6 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
           formAdd.reset();
           genericInput1.focus()
 
-          /* Fecha o modal (opcional, se quiser fechar após inserir)
-          const modalEl = document.getElementById("genericModal");
-          const modal = bootstrap.Modal.getInstance(modalEl);
-          modal.hide(); */
-
         } else {
           alert(data.error || "Erro ao inserir registro.");
         }
@@ -400,13 +395,8 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
           const data = await res.json();
 
           if (data.success) {
-            // Atualiza o select com os dados da tabela atual
-            loadGenericSelect(currentConfig.table, currentConfig.idField, currentConfig.fieldsToLoad);
 
-            /*
-            const modalEl = document.getElementById("genericModal");
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            modal.hide(); */
+            loadGenericSelect(currentConfig.table, currentConfig.idField, currentConfig.fieldsToLoad);
 
           } else {
             alert(data.error || "Erro ao excluir o registro.");

@@ -4,7 +4,7 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 
-require_once 'db.php';
+require_once '../db.php';
 
 // Lê dados enviados no corpo da requisição
 $data = json_decode(file_get_contents("php://input"), true);
