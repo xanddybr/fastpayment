@@ -1,4 +1,5 @@
 <?php
-$values = ['nome'=>'monica'];
-$fields = implode(",", array_keys($values));
-echo $fields;
+
+require './api/config.php';
+
+echo APP_NAME; 
