@@ -1,3 +1,8 @@
+Goal Main:
+
+ Sistem event manager integrated
+
+
 Users Storys
 
 - Como admin eu quero poder logar no sistema e ter acesso a um dashboard.
